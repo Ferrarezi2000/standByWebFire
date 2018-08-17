@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import Firebase from 'firebase'
+import firebase from 'firebase'
 import store from './store'
 import VueCurrencyFilter from 'vue-currency-filter'
 import VueResource from 'vue-resource'
@@ -9,13 +9,24 @@ import VueMoment from 'vue-moment'
 import moment from 'moment'
 import Buefy from 'buefy'
 import VeeValidate, { Validator } from 'vee-validate'
+import ptBR from 'vee-validate/dist/locale/pt_BR'
 
 Vue.config.productionTip = false
+
+/* eslint-disable */
+const config = {
+  apiKey: "AIzaSyABgVL1DtmSIxIYKvtlH9-bPSvkbrJfvlI",
+  authDomain: "stand-by-83130.firebaseapp.com",
+  databaseURL: "https://stand-by-83130.firebaseio.com",
+  projectId: "stand-by-83130",
+  storageBucket: "stand-by-83130.appspot.com",
+  messagingSenderId: "146976060182"
+};
+firebase.initializeApp(config)
 
 Validator.localize('pt_BR', ptBR)
 moment.locale('pt-BR')
 
-Vue.use(Firebase)
 Vue.use(Buefy, {defaultIconPack: 'fas'})
 Vue.use(VueResource)
 Vue.use(VueMoment, {moment})
