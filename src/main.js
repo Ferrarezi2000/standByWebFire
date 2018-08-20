@@ -8,6 +8,7 @@ import VueResource from 'vue-resource'
 import VueMoment from 'vue-moment'
 import moment from 'moment'
 import Buefy from 'buefy'
+import 'buefy/lib/buefy.css'
 import VeeValidate, { Validator } from 'vee-validate'
 import ptBR from 'vee-validate/dist/locale/pt_BR'
 
