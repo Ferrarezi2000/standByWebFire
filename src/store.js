@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
-  token: null
+  token: 'hduhduehdeuh'
 }
 const mutations = {
   registrarAdm (state, payload) {
