@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import {mapMutations} from 'vuex'
+import { mapMutations } from 'vuex'
 import firebase from 'firebase'
 
 export default {
@@ -57,11 +57,14 @@ export default {
   methods: {
     ...mapMutations(['registrarAdm']),
     logar () {
+      this.loading = true
       firebase.auth().signInWithEmailAndPassword(this.email, this.senha).then(res => {
         let token = Math.random().toString(5)
         this.registrarAdm(token)
         this.$router.push('/dashboard')
+        this.loading = false
       }, res => {
+        this.loading = false
         this.$toast.open({
           duration: 5000,
           message: `Email ou Senha incorreto!`,

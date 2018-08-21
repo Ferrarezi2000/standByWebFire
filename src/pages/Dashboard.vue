@@ -5,12 +5,12 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import { permissao } from '../config/permissao'
+
 export default {
+  mixins: [permissao],
   created () {
-    if (this.permissao()) {
-      
-    }
+    this.checarLogado()
   }
 }
 </script>

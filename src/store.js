@@ -12,7 +12,7 @@ const mutations = {
   }
 }
 const getters = {
-  permissao () {
+  checkToken () {
     return !!state.token
   }
 }
