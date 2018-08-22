@@ -4,16 +4,23 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
-  token: 'hduhduehdeuh'
+  token: 'hduhduehdeuh',
+  titulo: 'Título'
 }
 const mutations = {
   registrarAdm (state, payload) {
     state.token = payload
+  },
+  inserirTitulo (state, payload) {
+    state.titulo = payload
   }
 }
 const getters = {
   checkToken () {
     return !!state.token
+  },
+  getTitulo () {
+    return state.titulo
   }
 }
 

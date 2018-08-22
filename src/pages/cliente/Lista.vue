@@ -1,9 +1,10 @@
 <style scoped>
   .box {background-color: white; padding: 20px}
+  .page {margin: 30px 50px}
 </style>
 
 <template>
-  <div class="box">
+  <div class="box page">
     <b-loading :is-full-page="isFullPage" :active.sync="loading" :can-cancel="false"/>
 
     <div class="columns">
@@ -64,4 +65,3 @@ export default {
   }
 }
 </script>
-
