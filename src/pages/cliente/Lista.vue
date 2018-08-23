@@ -1,6 +1,11 @@
 <style scoped>
   .box {background-color: white; padding: 20px}
-  .page {margin: 30px 50px}
+  .page {margin: 30px 50px; border-radius: 0 !important;}
+  .titulo {font-weight: bold; font-size: 25px}
+  .tamanhaBotao {font-size: 10px}
+  td:last-child {text-align: right}
+  .botao {visibility: hidden}
+  tr:hover .botao {visibility: visible}
 </style>
 
 <template>
@@ -9,27 +14,52 @@
 
     <div class="columns">
       <div class="column">
-        <div class="title">Clientes</div>
+        <div class="titulo">Clientes</div>
       </div>
       <div class="column" style="text-align: right">
-        <button class="button is-primary">
-          <b-icon icon="plus"/>
-        </button>
+        <b-tooltip label="Novo Cliente" type="is-black">
+          <button class="button is-small">
+            <b-icon icon="plus"/>
+          </button>
+        </b-tooltip>
       </div>
     </div>
-    <hr/>
 
-    <b-table :data="clientes">
-    <template slot-scope="props">
-      <b-table-column field="nome" label="Nome" width="40" sortable numeric>
-        {{ props.row.nome }}
-      </b-table-column>
+    <b-table :data="clientes"
+             :paginated="isPaginated"
+             :per-page="perPage"
+             :current-page.sync="currentPage"
+             :pagination-simple="isPaginationSimple"
+             :default-sort-direction="defaultSortDirection"
+             default-sort="nome">
+      <template slot-scope="props">
+        <b-table-column label="#" width="50">
+          <small>{{ props.index + 1 }}.</small>
+        </b-table-column>
 
-      <b-table-column field="telefone" label="Telefone" sortable>
-        {{ props.row.telefone }}
-      </b-table-column>
-    </template>
-  </b-table>
+        <b-table-column field="nome" label="Nome" sortable>
+          {{ props.row.nome }}
+        </b-table-column>
+
+        <b-table-column field="telefone" label="Telefone">
+          {{ props.row.telefone }}
+        </b-table-column>
+
+        <b-table-column label="" width="90">
+          <b-tooltip label="Editar" type="is-black" class="botao">
+            <button class="button is-small tamanhaBotao">
+              <b-icon icon="pencil-alt"/>
+            </button>
+          </b-tooltip>
+
+          <b-tooltip label="Detalhe" type="is-black" class="botao">
+            <button class="button tamanhaBotao">
+              <b-icon icon="arrow-right"/>
+            </button>
+          </b-tooltip>
+        </b-table-column>
+      </template>
+    </b-table>
   </div>
 </template>
 
@@ -45,6 +75,11 @@ export default {
   },
   data () {
     return {
+      isPaginated: true,
+      isPaginationSimple: false,
+      defaultSortDirection: 'asc',
+      currentPage: 1,
+      perPage: 10,
       loading: false,
       isFullPage: true,
       clientes: []
@@ -60,6 +95,13 @@ export default {
           this.clientes.push(item)
         })
         this.loading = false
+      }, res => {
+        this.loading = false
+        this.$toast.open({
+          duration: 3000,
+          message: `Você não está logado em nosso sistema`,
+          type: 'is-danger'
+        })
       })
     }
   }

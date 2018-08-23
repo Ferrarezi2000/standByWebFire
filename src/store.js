@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 const state = {
   token: 'hduhduehdeuh',
-  titulo: 'Título'
+  titulo: 'Cliente'
 }
 const mutations = {
   registrarAdm (state, payload) {
