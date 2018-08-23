@@ -11,6 +11,7 @@ import Buefy from 'buefy'
 import 'buefy/lib/buefy.css'
 import VeeValidate, { Validator } from 'vee-validate'
 import ptBR from 'vee-validate/dist/locale/pt_BR'
+import DatePicker from 'vue2-datepicker'
 
 Vue.config.productionTip = false
 
@@ -28,6 +29,7 @@ firebase.initializeApp(config)
 Validator.localize('pt_BR', ptBR)
 moment.locale('pt-BR')
 
+Vue.use(DatePicker)
 Vue.use(Buefy, {defaultIconPack: 'fas'})
 Vue.use(VueResource)
 Vue.use(VueMoment, {moment})

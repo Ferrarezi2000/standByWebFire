@@ -18,14 +18,14 @@
       </div>
       <div class="column" style="text-align: right">
         <b-tooltip label="Novo Cliente" type="is-black">
-          <button class="button is-small">
-            <b-icon icon="plus"/>
+          <button class="button is-small" @click="carregarCliente">
+            <b-icon icon="redo"/>
           </button>
         </b-tooltip>
       </div>
     </div>
 
-    <b-table :data="clientes"
+    <b-table :data="clientes" hoverable narrowed
              :paginated="isPaginated"
              :per-page="perPage"
              :current-page.sync="currentPage"
@@ -38,11 +38,19 @@
         </b-table-column>
 
         <b-table-column field="nome" label="Nome" sortable>
-          {{ props.row.nome }}
+          {{ props.row.nome }} {{ props.row.sobrenome }}
         </b-table-column>
 
-        <b-table-column field="telefone" label="Telefone">
-          {{ props.row.telefone }}
+        <b-table-column field="cpf" label="CPF/CNPJ">
+          {{ props.row.cpf }}
+        </b-table-column>
+
+        <b-table-column field="contato.fixo" label="Fixo">
+          {{ props.row.contato.fixo }}
+        </b-table-column>
+
+        <b-table-column field="contato.celular" label="Celular">
+          {{ props.row.contato.celular }}
         </b-table-column>
 
         <b-table-column label="" width="90">
