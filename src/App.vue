@@ -10,8 +10,8 @@
       </div>
 
       <div class="column is-paddingless">
-        <div class="menuTop has-shadow" style="padding: 10px 0 0 50px">
-          <span class="titulo">{{ getTitulo }}</span>
+        <div class="menuTop has-shadow" style="padding: 10px 0 0 20px">
+          <span class="titulo">Stand By - Soluções em Informática</span>
         </div>
         <router-view/>
       </div>
