@@ -38,23 +38,31 @@
         </b-table-column>
 
         <b-table-column field="nome" label="Nome" sortable>
-          {{ props.row.nome }}
+          {{ props.row.cliente.nome }} {{ props.row.cliente.sobrenome }}
         </b-table-column>
 
-        <b-table-column field="descricao" label="Descrição">
-          {{ props.row.descricao }}
+        <b-table-column field="tipo" label="Tipo">
+          {{ props.row.tipo }}
         </b-table-column>
 
-        <b-table-column field="quantidade" label="Quantidade">
-          {{ props.row.quantidade }}
+        <b-table-column field="marca" label="mMrca">
+          {{ props.row.marca }}
         </b-table-column>
 
-        <b-table-column field="valor" label="Valor à vista">
-          {{ props.row.valor | currency }}
+        <b-table-column field="Modelo" label="modelo">
+          {{ props.row.modelo }}
         </b-table-column>
 
-        <b-table-column field="valor" label="Valor à prazo">
-          {{ props.row.valorDesconto | currency }}
+        <b-table-column field="numeroSerie" label="Nº Série">
+          {{ props.row.numeroSerie }}
+        </b-table-column>
+
+        <b-table-column field="acessorios" label="Acessórios">
+          {{ props.row.acessorios }}
+        </b-table-column>
+
+        <b-table-column field="observacao" label="Observações">
+          {{ props.row.observacao }}
         </b-table-column>
 
         <b-table-column label="" width="90">

@@ -70,26 +70,30 @@
       <div class="dadosPessoais">Ordem de serviço</div>
       <div class="columns">
         <div class="column">
-          <b-field label="Nome">
-            <b-input v-model="ordem.descricao" type="textarea"/>
-          </b-field>
-
-          <b-field label="Marca">
-            <b-input v-model="ordem.marca" />
+          <b-field label="Tipo">
+            <b-input v-model="ordem.tipo" />
           </b-field>
 
           <b-field label="Nº Série">
             <b-input v-model="ordem.numeroSerie" />
           </b-field>
+
+          <b-field label="Observações">
+            <b-input v-model="ordem.observacao" type="textarea"/>
+          </b-field>
         </div>
 
         <div class="column">
-          <b-field label="Acessorios">
-            <b-input v-model="ordem.acessorios" type="textarea"/>
+          <b-field label="Marca">
+            <b-input v-model="ordem.marca" />
           </b-field>
 
           <b-field label="Modelo">
             <b-input v-model="ordem.modelo" />
+          </b-field>
+
+          <b-field label="Acessorios">
+            <b-input v-model="ordem.acessorios" type="textarea"/>
           </b-field>
         </div>
       </div>
@@ -171,6 +175,8 @@ export default {
       isFullPage: true,
       clientes: [],
       ordem: {
+        observacao: null,
+        tipo: null,
         numero: null,
         cliente: {},
         descricao: null,
