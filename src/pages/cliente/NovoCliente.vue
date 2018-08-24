@@ -2,14 +2,15 @@
   .box {background-color: white; padding: 20px}
   .page {margin: 30px 50px; border-radius: 0 !important;}
   .titulo {font-weight: bold; font-size: 25px}
-  .dadosPessoais {font-weight: 500; margin: 20px 20px 20px 0; color: #262f3d}
+  .dadosPessoais {font-weight: 500; margin: 20px 20px 20px 0; color: rgb(3, 155, 229); font-size: 17px}
 </style>
 
 <template>
   <div class="box page">
     <b-loading :is-full-page="isFullPage" :active.sync="loading" :can-cancel="false"/>
 
-    <div class="titulo">Novo Cliente</div>
+    <div class="titulo" v-if="$route.params.id">Editar Cliente</div>
+    <div class="titulo" v-else>Novo Cliente</div>
 
     <div style="margin: 0 20px 0 20px">
       <div class="dadosPessoais">Dados Pessoais</div>
@@ -31,7 +32,8 @@
           </b-field>
 
           <b-field label="Data Nascimento">
-            <date-picker v-model="cliente.dataNascimento" lang="en" format="DD/MM/YYYY" confirm style="width: 100%"/>
+            <date-picker v-model="cliente.dataNascimento" lang="pt-br" format="DD/MM/YYYY"
+                         confirm style="width: 100%"/>
           </b-field>
         </div>
       </div>
@@ -76,7 +78,7 @@
       <hr/>
 
       <div style="width: 100%; text-align: right">
-        <button class="button is-info is-fullwidth" @click="salvar">Salvar</button>
+        <button class="button is-info is-fullwidth" @click="addEditar" :disabled="habilitarSavar">Salvar</button>
       </div>
     </div>
   </div>
@@ -92,13 +94,14 @@ export default {
   directives: { mask },
   created () {
     this.checarLogado()
+    if (this.$route.params.id) {
+      this.carregarCliente(this.$route.params.id)
+    }
   },
   data () {
     return {
       loading: false,
       isFullPage: true,
-      meses: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-      dias: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
       cliente: {
         nome: null,
         sobrenome: null,
@@ -109,9 +112,75 @@ export default {
       }
     }
   },
+  computed: {
+    habilitarSavar () {
+      let retorno = true
+      if (this.cliente.nome && this.cliente.sobrenome && this.cliente.dataNascimento && this.cliente.cpf && this.cliente.contato.fixo
+      && this.cliente.contato.celular && this.cliente.endereco.logradouor && this.cliente.endereco.numero && this.cliente.endereco.bairro) {
+        retorno = false
+      }
+      return retorno
+    }
+  },
   methods: {
+    carregarCliente (id) {
+      firebase.database().ref('/clientes').orderByKey().equalTo(id).on('value', res => {
+        res.forEach(item => {
+          this.cliente = item.val()
+        })
+      }, res => {
+        this.$toast.open({
+          duration: 3000,
+          message: `Cliente não encontrado!`,
+          type: 'is-danger'
+        })
+      })
+    },
+    ajustarNascimento () {
+      if (this.cliente.dataNascimento.length === undefined) {
+        let data = this.cliente.dataNascimento
+        let dia = data.getDate()
+        if (dia.toString().length === 1) {
+          dia = '0' + dia
+        }
+        let mes = data.getMonth() + 1
+        if (mes.toString().length === 1) {
+          mes = '0' + mes
+        }
+        let ano = data.getFullYear()
+        this.cliente.dataNascimento = dia + '/' + mes + '/' + ano + ''
+      }
+    },
+    addEditar () {
+      if (this.$route.params.id) {
+        this.editar()
+      } else {
+        this.salvar()
+      }
+    },
+    editar () {
+      this.loading = true
+      this.ajustarNascimento()
+      firebase.database().ref('/clientes').child(this.$route.params.id).set(this.cliente).then(res => {
+        this.loading = false
+        this.$toast.open({
+          duration: 3000,
+          message: `Cliente cadastrado com sucesso!`,
+          type: 'is-success'
+        })
+        this.$router.push('/clientes')
+      }, res => {
+        this.loading = false
+        this.$toast.open({
+          duration: 3000,
+          message: `Não ao cadastrar cliente`,
+          type: 'is-danger'
+        })
+      })
+    },
     salvar () {
       this.loading = true
+      this.ajustarNascimento()
       firebase.database().ref('clientes').push(this.cliente).then(res => {
         this.loading = false
         this.$toast.open({

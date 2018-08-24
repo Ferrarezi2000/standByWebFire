@@ -10,10 +10,10 @@
       </div>
 
       <div class="column is-paddingless">
-        <div class="menuTop has-shadow" style="padding: 10px 0 0 20px">
+        <div class="menuTop has-shadow" style="padding: 10px 0 0 20px; position: fixed; margin-left: 243px">
           <span class="titulo">Stand By - Soluções em Informática</span>
         </div>
-        <router-view/>
+        <router-view style="margin-top: 80px"/>
       </div>
     </div>
 

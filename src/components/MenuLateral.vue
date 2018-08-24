@@ -1,5 +1,5 @@
 <style scoped>
-  .menuLateral {background-color: #262f3d; width: 100%; height: 100%; left: 0; bottom: 0; top: 0; position: relative}
+  .menuLateral {background-color: #262f3d; width: 243px; height: 100%; left: 0; bottom: 0; top: 0; position: fixed}
   .itens {background-color: #262f3d !important; color: white}
   .itemOpen {background-color: #19212b !important;}
   p {color: white}

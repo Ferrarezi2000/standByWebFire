@@ -17,7 +17,7 @@
         <div class="titulo">Clientes</div>
       </div>
       <div class="column" style="text-align: right">
-        <b-tooltip label="Novo Cliente" type="is-black">
+        <b-tooltip label="Atualizar" type="is-black">
           <button class="button is-small" @click="carregarCliente">
             <b-icon icon="redo"/>
           </button>
@@ -45,6 +45,10 @@
           {{ props.row.cpf }}
         </b-table-column>
 
+        <b-table-column field="dataNascimento" label="Data Nascimento">
+          {{ props.row.dataNascimento }}
+        </b-table-column>
+
         <b-table-column field="contato.fixo" label="Fixo">
           {{ props.row.contato.fixo }}
         </b-table-column>
@@ -55,7 +59,7 @@
 
         <b-table-column label="" width="90">
           <b-tooltip label="Editar" type="is-black" class="botao">
-            <button class="button is-small tamanhaBotao">
+            <button class="button is-small tamanhaBotao" @click="editar(props.row.key)">
               <b-icon icon="pencil-alt"/>
             </button>
           </b-tooltip>
@@ -96,6 +100,7 @@ export default {
   methods: {
     carregarCliente () {
       this.loading = true
+      this.clientes = []
       firebase.database().ref('/clientes').on('value', res => {
         res.forEach(cliente => {
           let item = cliente.val()
@@ -111,6 +116,9 @@ export default {
           type: 'is-danger'
         })
       })
+    },
+    editar (id) {
+      this.$router.push('/cliente/' + id)
     }
   }
 }

@@ -12,6 +12,7 @@ export default new Router({
     {path: '/', component: Login},
     {path: '/clientes', component: Clientes},
     {path: '/cliente/novo', component: NovoCliente},
+    {path: '/cliente/:id', component: NovoCliente},
     {path: '/dashboard', component: Dashboard}
   ]
 })
