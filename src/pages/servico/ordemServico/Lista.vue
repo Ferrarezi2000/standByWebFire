@@ -112,7 +112,7 @@ export default {
       })
     },
     novaOrdemServico () {
-      this.$router.push('/produto/' + id)
+      this.$router.push('/ordemServico/novo')
     }
   }
 }
