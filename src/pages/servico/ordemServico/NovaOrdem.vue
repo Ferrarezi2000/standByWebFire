@@ -185,7 +185,7 @@ export default {
   methods: {
     salvar () {
       this.loading = true
-      firebase.database().ref('/ordemServico').push(this.ordem).then(res => {
+      firebase.database().ref('/ordemServicos').push(this.ordem).then(res => {
         this.loading = false
         this.$toast.open({
           duration: 3000,
