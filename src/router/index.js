@@ -4,6 +4,11 @@ import Login from '../pages/Login'
 import Dashboard from '../pages/Dashboard'
 import Clientes from '../pages/cliente/Lista'
 import NovoCliente from '../pages/cliente/NovoCliente'
+import Produtos from '../pages/produto/Lista'
+import NovoProduto from '../pages/produto/NovoProduto'
+import ListaOrdemServico from '../pages/servico/ordemServico/Lista'
+import NovaOrdem from '../pages/servico/ordemServico/NovaOrdem'
+import ListaServicoRealizado from '../pages/servico/servicoRealizado/Lista'
 
 Vue.use(Router)
 
@@ -13,6 +18,12 @@ export default new Router({
     {path: '/clientes', component: Clientes},
     {path: '/cliente/novo', component: NovoCliente},
     {path: '/cliente/:id', component: NovoCliente},
+    {path: '/produtos', component: Produtos},
+    {path: '/produto/novo', component: NovoProduto},
+    {path: '/produto/:id', component: NovoProduto},
+    {path: '/ordemServico', component: ListaOrdemServico},
+    {path: '/ordemServico/novo', component: NovaOrdem},
+    {path: '/servicoRealizado', component: ListaServicoRealizado},
     {path: '/dashboard', component: Dashboard}
   ]
 })

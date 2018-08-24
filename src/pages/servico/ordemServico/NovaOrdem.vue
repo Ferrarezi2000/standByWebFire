@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import { permissao } from '../../config/permissao'
+import { permissao } from '../../../config/permissao'
 import firebase from 'firebase'
 import { mask } from 'vue-the-mask'
 
@@ -94,15 +94,11 @@ export default {
   directives: { mask },
   created () {
     this.checarLogado()
-    if (this.$route.params.id) {
-      this.carregarCliente(this.$route.params.id)
-    }
   },
   data () {
     return {
       loading: false,
-      isFullPage: true,
-      cliente: {
+      ordem: {
         nome: null,
         sobrenome: null,
         cpf: null,
@@ -112,75 +108,7 @@ export default {
       }
     }
   },
-  computed: {
-    habilitarSavar () {
-      let retorno = true
-      if (this.cliente.nome && this.cliente.sobrenome && this.cliente.dataNascimento && this.cliente.cpf && this.cliente.contato.fixo &&
-        this.cliente.contato.celular && this.cliente.endereco.logradouor && this.cliente.endereco.numero && this.cliente.endereco.bairro) {
-        retorno = false
-      }
-      return retorno
-    }
-  },
   methods: {
-    carregarCliente (id) {
-      this.loading = true
-      firebase.database().ref('/clientes').orderByKey().equalTo(id).on('value', res => {
-        res.forEach(item => {
-          this.cliente = item.val()
-        })
-        this.loading = false
-      }, res => {
-        this.loading = false
-        this.$toast.open({
-          duration: 3000,
-          message: `Cliente não encontrado!`,
-          type: 'is-danger'
-        })
-      })
-    },
-    ajustarNascimento () {
-      if (this.cliente.dataNascimento.length === undefined) {
-        let data = this.cliente.dataNascimento
-        let dia = data.getDate()
-        if (dia.toString().length === 1) {
-          dia = '0' + dia
-        }
-        let mes = data.getMonth() + 1
-        if (mes.toString().length === 1) {
-          mes = '0' + mes
-        }
-        let ano = data.getFullYear()
-        this.cliente.dataNascimento = dia + '/' + mes + '/' + ano + ''
-      }
-    },
-    addEditar () {
-      if (this.$route.params.id) {
-        this.editar()
-      } else {
-        this.salvar()
-      }
-    },
-    editar () {
-      this.loading = true
-      this.ajustarNascimento()
-      firebase.database().ref('/clientes').child(this.$route.params.id).set(this.cliente).then(res => {
-        this.loading = false
-        this.$toast.open({
-          duration: 3000,
-          message: `Cliente cadastrado com sucesso!`,
-          type: 'is-success'
-        })
-        this.$router.push('/clientes')
-      }, res => {
-        this.loading = false
-        this.$toast.open({
-          duration: 3000,
-          message: `Não foi possivel cadastrar cliente`,
-          type: 'is-danger'
-        })
-      })
-    },
     salvar () {
       this.loading = true
       this.ajustarNascimento()
@@ -200,7 +128,26 @@ export default {
           type: 'is-danger'
         })
       })
-    }
+    },
+    listarClientes () {
+      this.loading = true
+      this.ordensServicos = []
+      firebase.database().ref('/ordemServicos').on('value', res => {
+        res.forEach(ordem => {
+          let item = ordem.val()
+          item.key = ordem.key
+          this.ordensServicos.push(item)
+        })
+        this.loading = false
+      }, res => {
+        this.loading = false
+        this.$toast.open({
+          duration: 3000,
+          message: `Você não está logado em nosso sistema`,
+          type: 'is-danger'
+        })
+      })
+    },
   }
 }
 </script>

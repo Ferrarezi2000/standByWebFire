@@ -85,14 +85,14 @@
       </div>
       <div class="card-content itemOpen">
         <div class="content" style="color: rgba(255,255,255,.7)">
-          <div style="margin-bottom: 20px; cursor: pointer" class="itemSelecao" @click="rota('/servicos')">
+          <div style="margin-bottom: 20px; cursor: pointer" class="itemSelecao" @click="rota('/ordemServico')">
             <b-icon icon="clipboard-list" size="is-small"/>
-            <span>Lista</span>
+            <span>Ordem de serviço</span>
           </div>
 
-          <div style="cursor: pointer" class="itemSelecao" @click="rota('/servico/novo')">
-            <b-icon icon="user" size="is-small"/>
-            <span>Novo serviço</span>
+          <div style="cursor: pointer" class="itemSelecao" @click="rota('/servicoRealizado')">
+            <b-icon icon="clipboard-list" size="is-small"/>
+            <span>Serviço realizados</span>
           </div>
         </div>
       </div>
