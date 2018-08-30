@@ -100,7 +100,7 @@
       <hr/>
 
       <div style="width: 100%; text-align: right">
-        <button class="button is-info is-fullwidth" @click="salvar" >Salvar</button>
+        <button class="button is-info is-fullwidth" @click="salvar" :disabled="habilitarSavar">Salvar</button>
       </div>
     </div>
   </div>
@@ -142,6 +142,17 @@ export default {
       }
     }
   },
+  computed: {
+    habilitarSavar() {
+      let retorno = true
+      if (this.ordem.cliente.nome && this.ordem.observacao && this.ordem.tipo && this.ordem.numero &&
+          this.ordem.descricao && this.ordem.acessorios && this.ordem.numeroSerie && this.ordem.marca &&
+          this.ordem.modelo) {
+        retorno = false
+      }
+      return retorno
+    }
+  },
   methods: {
     ajustardata() {
       let dia = this.dataAtual.getDate()
@@ -176,6 +187,24 @@ export default {
         })
       })
     },
+    listarClientes () {
+      this.loading = true
+      firebase.database().ref('/clientes').on('value', res => {
+        res.forEach(ordem => {
+          let item = ordem.val()
+          item.key = ordem.key
+          this.clientes.push(item)
+        })
+        this.loading = false
+      }, res => {
+        this.loading = false
+        this.$toast.open({
+          duration: 3000,
+          message: `Você não está logado em nosso sistema`,
+          type: 'is-danger'
+        })
+      })
+    },
     salvar () {
       this.loading = true
       firebase.database().ref('/ordemServicos').push(this.ordem).then(res => {
@@ -191,24 +220,6 @@ export default {
         this.$toast.open({
           duration: 3000,
           message: `Não foi possivel salvar essa Ordem de Serviço`,
-          type: 'is-danger'
-        })
-      })
-    },
-    listarClientes () {
-      this.loading = true
-      firebase.database().ref('/clientes').on('value', res => {
-        res.forEach(ordem => {
-          let item = ordem.val()
-          item.key = ordem.key
-          this.clientes.push(item)
-        })
-        this.loading = false
-      }, res => {
-        this.loading = false
-        this.$toast.open({
-          duration: 3000,
-          message: `Você não está logado em nosso sistema`,
           type: 'is-danger'
         })
       })
