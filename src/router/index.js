@@ -8,6 +8,7 @@ import Produtos from '../pages/produto/Lista'
 import NovoProduto from '../pages/produto/NovoProduto'
 import ListaOrdemServico from '../pages/servico/ordemServico/Lista'
 import NovaOrdem from '../pages/servico/ordemServico/NovaOrdem'
+import VisualizarOrdem from '../pages/servico/ordemServico/Visualizar'
 import ListaServicoRealizado from '../pages/servico/servicoRealizado/Lista'
 
 Vue.use(Router)
@@ -23,6 +24,7 @@ export default new Router({
     {path: '/produto/:id', component: NovoProduto},
     {path: '/ordemServico', component: ListaOrdemServico},
     {path: '/ordemServico/novo', component: NovaOrdem},
+    {path: '/ordemServico/:id', component: VisualizarOrdem},
     {path: '/servicoRealizado', component: ListaServicoRealizado},
     {path: '/dashboard', component: Dashboard}
   ]

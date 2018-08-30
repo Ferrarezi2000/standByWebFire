@@ -17,15 +17,18 @@
         <div class="titulo">Produtos</div>
       </div>
       <div class="column" style="text-align: right">
-        <b-tooltip label="Atualizar" type="is-black">
-          <button class="button is-small" @click="listarProdutos">
-            <b-icon icon="redo"/>
-          </button>
-        </b-tooltip>
+        <b-field>
+          <b-input placeholder="Pesquisar..."
+                   type="search"
+                   icon-pack="fas"
+                   v-model="filtro"
+                   icon="search">
+          </b-input>
+        </b-field>
       </div>
     </div>
 
-    <b-table :data="produtos" hoverable narrowed
+    <b-table :data="listaFiltrada" hoverable narrowed
              :paginated="isPaginated"
              :per-page="perPage"
              :current-page.sync="currentPage"
@@ -39,6 +42,10 @@
 
         <b-table-column field="nome" label="Nome" sortable>
           {{ props.row.nome }}
+        </b-table-column>
+
+        <b-table-column field="marca" label="Marca" sortable>
+          {{ props.row.marca }}
         </b-table-column>
 
         <b-table-column field="descricao" label="Descrição">
@@ -88,7 +95,15 @@ export default {
       perPage: 10,
       loading: false,
       isFullPage: true,
+      filtro: '',
       produtos: []
+    }
+  },
+  computed: {
+    listaFiltrada () {
+      return this.produtos.filter(i => {
+        return i.nome.toUpperCase().indexOf(this.filtro.toUpperCase()) > -1
+      })
     }
   },
   methods: {

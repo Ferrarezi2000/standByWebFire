@@ -8,37 +8,58 @@
 <template>
   <div class="box page">
     <b-loading :is-full-page="isFullPage" :active.sync="loading" :can-cancel="false"/>
-
     <div class="titulo" v-if="$route.params.id">Editar Produto</div>
     <div class="titulo" v-else>Novo Produto</div>
 
     <div style="margin: 0 20px 0 20px">
       <div class="dadosPessoais">Dados</div>
-
       <div class="columns">
         <div class="column">
           <b-field label="Nome">
             <b-input v-model="produto.nome"/>
           </b-field>
+        </div>
 
-          <b-field label="Valor À Vista">
-            <money :value="calcularDesconto" class="input" disabled/>
+        <div class="column">
+          <b-field label="Marca">
+            <b-input v-model="produto.marca"/>
           </b-field>
         </div>
+
         <div class="column">
+          <b-field label="Serial">
+            <b-input v-model="produto.serial"/>
+          </b-field>
+        </div>
+
+        <div class="column is-1">
           <b-field label="Quantidade">
             <b-input v-model="produto.quantidade"/>
-          </b-field>
-
-          <b-field label="Valor À Prazo">
-            <money v-model="produto.valorDesconto" class="input"  />
           </b-field>
         </div>
       </div>
 
-      <b-field label="Descição">
-        <b-input v-model="produto.descricao"/>
-      </b-field>
+      <div class="columns">
+        <div class="column">
+          <b-field label="Valor À Vista">
+            <money :value="calcularDesconto" class="input" disabled/>
+          </b-field>
+        </div>
+
+        <div class="column">
+          <b-field label="Valor À Prazo">
+            <money v-model="produto.valorDesconto" class="input"/>
+          </b-field>
+        </div>
+      </div>
+
+      <div class="columns">
+        <div class="column">
+          <b-field label="Descição">
+            <b-input v-model="produto.descricao" type="textarea"/>
+          </b-field>
+        </div>
+      </div>
       <hr/>
 
       <div style="width: 100%; text-align: right">
@@ -67,7 +88,9 @@ export default {
       loading: false,
       isFullPage: true,
       produto: {
+        serial: null,
         nome: null,
+        marca: null,
         descricao: null,
         quantidade: null,
         valor: '',
@@ -84,7 +107,7 @@ export default {
     },
     habilitarSavar () {
       let retorno = true
-      if (this.produto.nome && this.produto.descricao && this.produto.quantidade && this.produto.valor) {
+      if (this.produto.nome && this.produto.descricao && this.produto.quantidade && this.produto.valor && this.produto.marca && this.produto.serial) {
         retorno = false
       }
       return retorno

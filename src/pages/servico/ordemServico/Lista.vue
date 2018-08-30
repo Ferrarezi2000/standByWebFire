@@ -18,7 +18,7 @@
       </div>
       <div class="column" style="text-align: right">
         <b-tooltip label="Nova Ordem de Serviço" type="is-black">
-          <button class="button is-small" @click="novaOrdemServico">
+          <button class="button is-small" @click="rota('/ordemServico/novo')">
             <b-icon icon="plus"/>
           </button>
         </b-tooltip>
@@ -75,13 +75,13 @@
 
         <b-table-column label="" width="90">
           <b-tooltip label="Visualizar" type="is-black" class="botao">
-            <button class="button is-small tamanhaBotao" @click="editar(props.row.key)">
+            <button class="button is-small tamanhaBotao" @click="rota('/ordemServico/' + props.row.key)">
               <b-icon icon="eye"/>
             </button>
           </b-tooltip>
 
           <b-tooltip label="Imprimir" type="is-black" class="botao">
-            <button class="button is-small tamanhaBotao" @click="editar(props.row.key)">
+            <button class="button is-small tamanhaBotao" @click="rota(props.row.key)">
               <b-icon icon="print"/>
             </button>
           </b-tooltip>
@@ -133,8 +133,8 @@ export default {
         })
       })
     },
-    novaOrdemServico () {
-      this.$router.push('/ordemServico/novo')
+    rota (caminho) {
+      this.$router.push(caminho)
     }
   }
 }

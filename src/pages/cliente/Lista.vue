@@ -17,15 +17,18 @@
         <div class="titulo">Clientes</div>
       </div>
       <div class="column" style="text-align: right">
-        <b-tooltip label="Atualizar" type="is-black">
-          <button class="button is-small" @click="carregarCliente">
-            <b-icon icon="redo"/>
-          </button>
-        </b-tooltip>
+        <b-field>
+          <b-input placeholder="Pesquisar..."
+                   type="search"
+                   icon-pack="fas"
+                   v-model="filtro"
+                   icon="search">
+          </b-input>
+        </b-field>
       </div>
     </div>
 
-    <b-table :data="clientes" hoverable narrowed
+    <b-table :data="listaFiltrada" hoverable narrowed
              :paginated="isPaginated"
              :per-page="perPage"
              :current-page.sync="currentPage"
@@ -55,6 +58,10 @@
 
         <b-table-column field="contato.celular" label="Celular">
           {{ props.row.contato.celular }}
+        </b-table-column>
+
+        <b-table-column field="contato.email" label="Email">
+          {{ props.row.contato.email }}
         </b-table-column>
 
         <b-table-column label="" width="90">
@@ -94,7 +101,16 @@ export default {
       perPage: 10,
       loading: false,
       isFullPage: true,
+      filtro: '',
       clientes: []
+    }
+  },
+  computed: {
+    listaFiltrada () {
+      return this.clientes.filter(i => {
+        return i.nome.toUpperCase().indexOf(this.filtro.toUpperCase()) > -1 ||
+          i.sobrenome.toUpperCase().indexOf(this.filtro.toUpperCase()) > -1
+      })
     }
   },
   methods: {

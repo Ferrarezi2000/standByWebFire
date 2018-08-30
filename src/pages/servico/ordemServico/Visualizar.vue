@@ -1,7 +1,191 @@
-<style scoped></style>
+<style scoped>
+  .box {background-color: white; padding: 20px}
+  .page {margin: 30px 50px; border-radius: 0 !important;}
+  .titulo {font-weight: bold; font-size: 25px; margin-bottom: 20px}
+  .dadosPessoais {font-weight: 500; margin: 20px 20px 20px 0; color: rgb(3, 155, 229); font-size: 17px}
+</style>
 
-<template></template>
+<template>
+  <div class="box page">
+    <b-loading :is-full-page="isFullPage" :active.sync="loading" :can-cancel="false"/>
+
+    <div class="columns">
+      <div class="titulo column">Ordem de Serviço</div>
+      <div class="column" style="text-align: right; font-weight: bold">
+        <div>{{ ordem.numero }}</div>
+        <div>{{ ordem.data }}</div>
+      </div>
+    </div>
+
+    <div style="margin: 0 20px 0 20px">
+      <div class="columns" v-if="ordem.cliente.key">
+        <div class="column is-8">
+          <div class="dadosPessoais">Dados Cliente</div>
+          <div class="columns">
+            <div class="column">
+              <b-field label="Nome">
+                <div>{{ ordem.cliente.nome }} {{ ordem.cliente.sobrenome }}</div>
+              </b-field>
+
+            </div>
+            <div class="column">
+              <b-field label="CPF/CNPJ">
+                <div>{{ ordem.cliente.cpf }}</div>
+              </b-field>
+            </div>
+            <div class="column">
+              <b-field label="Data Nascimento">
+                <div>{{ ordem.cliente.dataNascimento }}</div>
+              </b-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="dadosPessoais">Endereço</div>
+          <div class="columns">
+            <div class="column">
+              <b-field label="Logradouro">
+                <div>{{ ordem.cliente.endereco.logradouro }}, {{ ordem.cliente.endereco.numero }}</div>
+              </b-field>
+            </div>
+            <div class="column">
+              <b-field label="Bairro">
+                <div>{{ ordem.cliente.endereco.bairro }}</div>
+              </b-field>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr/>
+
+      <div class="dadosPessoais">Ordem de serviço</div>
+      <div class="columns">
+        <div class="column">
+          <b-field label="Tipo">
+            <div>{{ordem.tipo}}</div>
+          </b-field>
+
+          <b-field label="Nº Série">
+            <div>{{ordem.numeroSerie}}</div>
+          </b-field>
+
+          <b-field label="Observações">
+            <div>{{ordem.observacao}}</div>
+          </b-field>
+        </div>
+
+        <div class="column">
+          <b-field label="Marca">
+            <div>{{ordem.marca}}</div>
+          </b-field>
+
+          <b-field label="Modelo">
+            <div>{{ordem.modelo}}</div>
+          </b-field>
+
+          <b-field label="Acessorios">
+            <div>{{ordem.acessorios}}</div>
+          </b-field>
+        </div>
+
+        <div class="column">
+
+        </div>
+      </div>
+      <hr/>
+
+      <div style="width: 100%; text-align: right">
+        <button class="button is-info is-fullwidth" @click="salvar" :disabled="habilitarSavar">Salvar</button>
+      </div>
+    </div>
+  </div>
+</template>
 
 <script>
-export default {}
+import { permissao } from '../../../config/permissao'
+import firebase from 'firebase'
+import { mask } from 'vue-the-mask'
+
+export default {
+  mixins: [permissao],
+  directives: { mask },
+  created () {
+    console.log('passou')
+    this.checarLogado()
+    if (this.$route.params.id) {
+      this.carregarOrdem(this.$route.params.id)
+    }
+  },
+  data () {
+    return {
+      dataAtual: null,
+      loading: false,
+      isFullPage: true,
+      clientes: [],
+      ordens: [],
+      ordem: {
+        observacao: null,
+        tipo: null,
+        numero: null,
+        cliente: {},
+        descricao: null,
+        data: null,
+        acessorios: null,
+        numeroSerie: null,
+        marca: null,
+        modelo: null
+      }
+    }
+  },
+  computed: {
+    habilitarSavar () {
+      let retorno = true
+      if (this.ordem.cliente.nome && this.ordem.observacao && this.ordem.tipo && this.ordem.numero &&
+        this.ordem.descricao && this.ordem.acessorios && this.ordem.numeroSerie && this.ordem.marca &&
+        this.ordem.modelo) {
+        retorno = false
+      }
+      return retorno
+    }
+  },
+  methods: {
+    carregarOrdem (id) {
+      this.loading = true
+      firebase.database().ref('/ordemServicos').orderByKey().equalTo(id).on('value', res => {
+        res.forEach(item => {
+          this.ordem = item.val()
+        })
+        this.loading = false
+        console.log('ordem', this.ordem)
+      }, res => {
+        this.loading = false
+        this.$toast.open({
+          duration: 3000,
+          message: `Ordem de serviço não encontrada!`,
+          type: 'is-danger'
+        })
+      })
+    },
+    salvar () {
+      this.loading = true
+      firebase.database().ref('/ordemServicos').push(this.ordem).then(res => {
+        this.loading = false
+        this.$toast.open({
+          duration: 3000,
+          message: `Ordem de Serviço cadastrada com sucesso!`,
+          type: 'is-success'
+        })
+        this.$router.push('/ordemServico')
+      }, res => {
+        this.loading = false
+        this.$toast.open({
+          duration: 3000,
+          message: `Não foi possivel salvar essa Ordem de Serviço`,
+          type: 'is-danger'
+        })
+      })
+    }
+  }
+}
 </script>

@@ -30,20 +30,23 @@
       </b-field>
 
       <div class="columns" v-if="ordem.cliente.key">
-        <div class="column">
+        <div class="column is-8">
           <div class="dadosPessoais">Dados Cliente</div>
           <div class="columns">
             <div class="column">
               <b-field label="Nome">
                 <div>{{ ordem.cliente.nome }} {{ ordem.cliente.sobrenome }}</div>
               </b-field>
-              <b-field label="Data Nascimento">
-                <div>{{ ordem.cliente.dataNascimento }}</div>
-              </b-field>
+
             </div>
             <div class="column">
               <b-field label="CPF/CNPJ">
                 <div>{{ ordem.cliente.cpf }}</div>
+              </b-field>
+            </div>
+            <div class="column">
+              <b-field label="Data Nascimento">
+                <div>{{ ordem.cliente.dataNascimento }}</div>
               </b-field>
             </div>
           </div>
@@ -130,6 +133,9 @@ export default {
       ordens: [],
       ordem: {
         observacao: null,
+        finalizado: false,
+        relizado: false,
+        cancelado: false,
         tipo: null,
         numero: null,
         cliente: {},
@@ -143,18 +149,18 @@ export default {
     }
   },
   computed: {
-    habilitarSavar() {
+    habilitarSavar () {
       let retorno = true
       if (this.ordem.cliente.nome && this.ordem.observacao && this.ordem.tipo && this.ordem.numero &&
-          this.ordem.descricao && this.ordem.acessorios && this.ordem.numeroSerie && this.ordem.marca &&
-          this.ordem.modelo) {
+        this.ordem.descricao && this.ordem.acessorios && this.ordem.numeroSerie && this.ordem.marca &&
+        this.ordem.modelo) {
         retorno = false
       }
       return retorno
     }
   },
   methods: {
-    ajustardata() {
+    ajustardata () {
       let dia = this.dataAtual.getDate()
       if (dia.toString().length === 1) {
         dia = '0' + dia
@@ -195,6 +201,7 @@ export default {
           item.key = ordem.key
           this.clientes.push(item)
         })
+        this.clientes.sort(this.ordenarClientes)
         this.loading = false
       }, res => {
         this.loading = false
@@ -204,6 +211,15 @@ export default {
           type: 'is-danger'
         })
       })
+    },
+    ordenarClientes (a, b) {
+      if (a.nome < b.nome) {
+        return -1
+      }
+      if (a.nome > b.nome) {
+        return 1
+      }
+      return 0
     },
     salvar () {
       this.loading = true
