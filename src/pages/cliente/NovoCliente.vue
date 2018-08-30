@@ -52,6 +52,12 @@
             <b-input v-model="cliente.contato.celular"  v-mask="['(##) ####-####', '(##) #####-####']"/>
           </b-field>
         </div>
+
+        <div class="column">
+          <b-field label="Email">
+            <b-input v-model="cliente.contato.email"/>
+          </b-field>
+        </div>
       </div>
       <hr/>
 
@@ -59,7 +65,7 @@
       <div class="columns">
         <div class="column">
           <b-field label="Logradouro">
-            <b-input v-model="cliente.endereco.logradouor"/>
+            <b-input v-model="cliente.endereco.logradouro"/>
           </b-field>
         </div>
 
@@ -107,16 +113,16 @@ export default {
         sobrenome: null,
         cpf: null,
         dataNascimento: null,
-        contato: {fixo: null, celular: null},
-        endereco: {logradouor: null, numero: null, bairro: null}
+        contato: {fixo: null, celular: null, email: null},
+        endereco: {logradouro: null, numero: null, bairro: null}
       }
     }
   },
   computed: {
     habilitarSavar () {
       let retorno = true
-      if (this.cliente.nome && this.cliente.sobrenome && this.cliente.dataNascimento && this.cliente.cpf && this.cliente.contato.fixo &&
-        this.cliente.contato.celular && this.cliente.endereco.logradouor && this.cliente.endereco.numero && this.cliente.endereco.bairro) {
+      if (this.cliente.nome && this.cliente.sobrenome && this.cliente.dataNascimento && this.cliente.cpf && this.cliente.contato.fixo && this.cliente.contato.email &&
+        this.cliente.contato.celular && this.cliente.endereco.logradouro && this.cliente.endereco.numero && this.cliente.endereco.bairro) {
         retorno = false
       }
       return retorno
@@ -128,6 +134,11 @@ export default {
       firebase.database().ref('/clientes').orderByKey().equalTo(id).on('value', res => {
         res.forEach(item => {
           this.cliente = item.val()
+          let dia = this.cliente.dataNascimento.slice(0, 2)
+          let mes = this.cliente.dataNascimento.slice(3, 5)
+          let ano = this.cliente.dataNascimento.slice(6, 10)
+          let data = new Date(parseInt(ano), parseInt(mes - 1), parseInt(dia))
+          this.cliente.dataNascimento = data
         })
         this.loading = false
       }, res => {

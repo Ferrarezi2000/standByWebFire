@@ -14,75 +14,53 @@
 
     <div class="columns">
       <div class="column">
-        <div class="titulo">Ordens de Serviços</div>
+        <div class="titulo">Produtos</div>
       </div>
       <div class="column" style="text-align: right">
-        <b-tooltip label="Nova Ordem de Serviço" type="is-black">
-          <button class="button is-small" @click="novaOrdemServico">
-            <b-icon icon="plus"/>
+        <b-tooltip label="Atualizar" type="is-black">
+          <button class="button is-small" @click="listarProdutos">
+            <b-icon icon="redo"/>
           </button>
         </b-tooltip>
       </div>
     </div>
 
-    <b-table :data="ordensServicos" hoverable narrowed
+    <b-table :data="produtos" hoverable narrowed
              :paginated="isPaginated"
              :per-page="perPage"
              :current-page.sync="currentPage"
              :pagination-simple="isPaginationSimple"
              :default-sort-direction="defaultSortDirection"
-             default-sort="index">
+             default-sort="nome">
       <template slot-scope="props">
         <b-table-column label="#" width="50">
           <small>{{ props.index + 1 }}.</small>
         </b-table-column>
 
-        <b-table-column label="Número" width="80">
-          <small>{{ props.row.numero }}</small>
+        <b-table-column field="nome" label="Nome" sortable>
+          {{ props.row.nome }}
         </b-table-column>
 
-        <b-table-column label="Data" >
-          <small>{{ props.row.data }}</small>
+        <b-table-column field="descricao" label="Descrição">
+          {{ props.row.descricao }}
         </b-table-column>
 
-        <b-table-column field="cliente.nome" label="Nome" sortable v-if="props.row.cliente">
-          {{ props.row.cliente.nome }} {{ props.row.cliente.sobrenome }}
+        <b-table-column field="quantidade" label="Quantidade">
+          {{ props.row.quantidade }}
         </b-table-column>
 
-        <b-table-column field="tipo" label="Tipo">
-          {{ props.row.tipo }}
+        <b-table-column field="valor" label="Valor à vista">
+          {{ props.row.valor | currency }}
         </b-table-column>
 
-        <b-table-column field="marca" label="mMrca">
-          {{ props.row.marca }}
-        </b-table-column>
-
-        <b-table-column field="Modelo" label="modelo">
-          {{ props.row.modelo }}
-        </b-table-column>
-
-        <b-table-column field="numeroSerie" label="Nº Série">
-          {{ props.row.numeroSerie }}
-        </b-table-column>
-
-        <b-table-column field="acessorios" label="Acessórios">
-          {{ props.row.acessorios }}
-        </b-table-column>
-
-        <b-table-column field="observacao" label="Observações">
-          {{ props.row.observacao }}
+        <b-table-column field="valor" label="Valor à prazo">
+          {{ props.row.valorDesconto | currency }}
         </b-table-column>
 
         <b-table-column label="" width="90">
-          <b-tooltip label="Visualizar" type="is-black" class="botao">
+          <b-tooltip label="Editar" type="is-black" class="botao">
             <button class="button is-small tamanhaBotao" @click="editar(props.row.key)">
-              <b-icon icon="eye"/>
-            </button>
-          </b-tooltip>
-
-          <b-tooltip label="Imprimir" type="is-black" class="botao">
-            <button class="button is-small tamanhaBotao" @click="editar(props.row.key)">
-              <b-icon icon="print"/>
+              <b-icon icon="pencil-alt"/>
             </button>
           </b-tooltip>
         </b-table-column>
@@ -99,7 +77,7 @@ export default {
   mixins: [permissao],
   created () {
     this.checarLogado()
-    this.listarOrdemServico()
+    this.listarProdutos()
   },
   data () {
     return {
@@ -110,18 +88,18 @@ export default {
       perPage: 10,
       loading: false,
       isFullPage: true,
-      ordensServicos: []
+      produtos: []
     }
   },
   methods: {
-    listarOrdemServico () {
+    listarProdutos () {
       this.loading = true
-      this.ordensServicos = []
-      firebase.database().ref('/ordemServicos').on('value', res => {
-        res.forEach(ordem => {
-          let item = ordem.val()
-          item.key = ordem.key
-          this.ordensServicos.push(item)
+      this.produtos = []
+      firebase.database().ref('/produtos').on('value', res => {
+        res.forEach(cliente => {
+          let item = cliente.val()
+          item.key = cliente.key
+          this.produtos.push(item)
         })
         this.loading = false
       }, res => {
@@ -133,8 +111,8 @@ export default {
         })
       })
     },
-    novaOrdemServico () {
-      this.$router.push('/ordemServico/novo')
+    editar (id) {
+      this.$router.push('/produto/' + id)
     }
   }
 }

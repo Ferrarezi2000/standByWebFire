@@ -12,7 +12,7 @@
     <div class="columns">
       <div class="titulo column">Nova Ordem de Serviço</div>
       <div class="column" style="text-align: right; font-weight: bold">
-        <div>Nº 0001</div>
+        <div>{{ ordem.numero }}</div>
         <div>{{ dataAtual | moment("ddd, DD MMM YYYY HH:mm") }}</div>
       </div>
     </div>
@@ -54,7 +54,7 @@
           <div class="columns">
             <div class="column">
               <b-field label="Logradouro">
-                <div>{{ ordem.cliente.endereco.logradouor }}, {{ ordem.cliente.endereco.numero }}</div>
+                <div>{{ ordem.cliente.endereco.logradouro }}, {{ ordem.cliente.endereco.numero }}</div>
               </b-field>
             </div>
             <div class="column">
@@ -97,55 +97,6 @@
           </b-field>
         </div>
       </div>
-        <!--<div class="column">-->
-          <!--<b-field label="Sobrenome">-->
-            <!--<b-input v-model="cliente.sobrenome"/>-->
-          <!--</b-field>-->
-
-          <!--<b-field label="Data Nascimento">-->
-            <!--<date-picker v-model="cliente.dataNascimento" lang="pt-br" format="DD/MM/YYYY"-->
-                         <!--confirm style="width: 100%"/>-->
-          <!--</b-field>-->
-        <!--</div>-->
-      <!--</div>-->
-      <!--<hr/>-->
-
-      <!--<div class="dadosPessoais">Contatos</div>-->
-      <!--<div class="columns">-->
-        <!--<div class="column">-->
-          <!--<b-field label="Telefone Fixo">-->
-            <!--<b-input v-model="cliente.contato.fixo"  v-mask="['(##) ####-####', '(##) #####-####']"/>-->
-          <!--</b-field>-->
-        <!--</div>-->
-
-        <!--<div class="column">-->
-          <!--<b-field label="Telefone Celular">-->
-            <!--<b-input v-model="cliente.contato.celular"  v-mask="['(##) ####-####', '(##) #####-####']"/>-->
-          <!--</b-field>-->
-        <!--</div>-->
-      <!--</div>-->
-      <!--<hr/>-->
-
-      <!--<div class="dadosPessoais">Endereço</div>-->
-      <!--<div class="columns">-->
-        <!--<div class="column">-->
-          <!--<b-field label="Logradouro">-->
-            <!--<b-input v-model="cliente.endereco.logradouor"/>-->
-          <!--</b-field>-->
-        <!--</div>-->
-
-        <!--<div class="column">-->
-          <!--<b-field label="Bairro">-->
-            <!--<b-input v-model="cliente.endereco.bairro"/>-->
-          <!--</b-field>-->
-        <!--</div>-->
-
-        <!--<div class="column is-2">-->
-          <!--<b-field label="Número">-->
-            <!--<b-input v-model="cliente.endereco.numero"/>-->
-          <!--</b-field>-->
-        <!--</div>-->
-      <!--</div>-->
       <hr/>
 
       <div style="width: 100%; text-align: right">
@@ -167,6 +118,8 @@ export default {
     this.checarLogado()
     this.listarClientes()
     this.dataAtual = new Date()
+    this.ajustardata(this.dataAtual)
+    this.listarOrdens()
   },
   data () {
     return {
@@ -174,6 +127,7 @@ export default {
       loading: false,
       isFullPage: true,
       clientes: [],
+      ordens: [],
       ordem: {
         observacao: null,
         tipo: null,
@@ -189,6 +143,39 @@ export default {
     }
   },
   methods: {
+    ajustardata() {
+      let dia = this.dataAtual.getDate()
+      if (dia.toString().length === 1) {
+        dia = '0' + dia
+      }
+      let mes = this.dataAtual.getMonth() + 1
+      if (mes.toString().length === 1) {
+        mes = '0' + mes
+      }
+      let ano = this.dataAtual.getFullYear()
+      this.ordem.data = dia + '/' + mes + '/' + ano + ''
+    },
+    listarOrdens () {
+      firebase.database().ref('/ordemServicos').on('value', res => {
+        res.forEach(ordem => {
+          let item = ordem.val()
+          this.ordens.push(item)
+        })
+        if (this.ordens.length !== 0) {
+          this.ordem.numero = this.ordens[this.ordens.length - 1].numero + 1
+        } else {
+          this.ordem.numero = 1
+        }
+        this.loading = false
+      }, res => {
+        this.loading = false
+        this.$toast.open({
+          duration: 3000,
+          message: `Você não está logado em nosso sistema`,
+          type: 'is-danger'
+        })
+      })
+    },
     salvar () {
       this.loading = true
       firebase.database().ref('/ordemServicos').push(this.ordem).then(res => {
