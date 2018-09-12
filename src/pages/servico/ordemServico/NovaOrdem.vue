@@ -139,7 +139,6 @@ export default {
         tipo: null,
         numero: null,
         cliente: {},
-        descricao: null,
         data: null,
         acessorios: null,
         numeroSerie: null,
@@ -152,7 +151,7 @@ export default {
     habilitarSavar () {
       let retorno = true
       if (this.ordem.cliente.nome && this.ordem.observacao && this.ordem.tipo && this.ordem.numero &&
-        this.ordem.descricao && this.ordem.acessorios && this.ordem.numeroSerie && this.ordem.marca &&
+        this.ordem.acessorios && this.ordem.numeroSerie && this.ordem.marca &&
         this.ordem.modelo) {
         retorno = false
       }

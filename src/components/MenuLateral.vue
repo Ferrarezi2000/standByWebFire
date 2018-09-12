@@ -90,9 +90,14 @@
             <span>Ordem de serviço</span>
           </div>
 
-          <div style="cursor: pointer" class="itemSelecao" @click="rota('/servicoRealizado')">
+          <div style="cursor: pointer; margin-bottom: 20px" class="itemSelecao" @click="rota('/servicoRealizado')">
             <b-icon icon="clipboard-list" size="is-small"/>
             <span>Serviço realizados</span>
+          </div>
+
+          <div style="cursor: pointer" class="itemSelecao" @click="rota('/servicoCancelado')">
+            <b-icon icon="clipboard-list" size="is-small"/>
+            <span>Serviço cancelados</span>
           </div>
         </div>
       </div>

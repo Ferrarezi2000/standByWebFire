@@ -10,6 +10,7 @@ import ListaOrdemServico from '../pages/servico/ordemServico/Lista'
 import NovaOrdem from '../pages/servico/ordemServico/NovaOrdem'
 import VisualizarOrdem from '../pages/servico/ordemServico/Visualizar'
 import ListaServicoRealizado from '../pages/servico/servicoRealizado/Lista'
+import ListaServicoCancelado from '../pages/servico/servicoCancelado/Lista'
 
 Vue.use(Router)
 
@@ -26,6 +27,7 @@ export default new Router({
     {path: '/ordemServico/novo', component: NovaOrdem},
     {path: '/ordemServico/:id', component: VisualizarOrdem},
     {path: '/servicoRealizado', component: ListaServicoRealizado},
+    {path: '/servicoCancelado', component: ListaServicoCancelado},
     {path: '/dashboard', component: Dashboard}
   ]
 })

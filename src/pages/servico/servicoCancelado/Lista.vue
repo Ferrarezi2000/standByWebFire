@@ -14,7 +14,7 @@
 
     <div class="columns">
       <div class="column">
-        <div class="titulo">Ordens de Serviços - Finalizadas</div>
+        <div class="titulo">Ordens de Serviços - Cancelados</div>
       </div>
     </div>
 
@@ -107,7 +107,7 @@ export default {
         res.forEach(ordem => {
           let item = ordem.val()
           item.key = ordem.key
-          if (item.finalizada) {
+          if (item.cancelada) {
             this.ordensServicos.push(item)
           }
         })
