@@ -120,9 +120,14 @@
             <span>Lista</span>
           </div>
 
-          <div style="cursor: pointer" class="itemSelecao" @click="rota('/venda/novo')">
+          <div style="cursor: pointer; margin-bottom: 20px" class="itemSelecao" @click="rota('/venda/novo')">
             <b-icon icon="user" size="is-small"/>
             <span>Novo venda</span>
+          </div>
+
+          <div style="cursor: pointer" class="itemSelecao" @click="rota('/venda/outros')">
+            <b-icon icon="user" size="is-small"/>
+            <span>Outros serviços</span>
           </div>
         </div>
       </div>

@@ -93,7 +93,7 @@
           </b-tooltip>
 
           <b-tooltip label="Imprimir" type="is-black" class="botao">
-            <button class="button is-small tamanhaBotao" @click="rota(props.row.key)">
+            <button class="button is-small tamanhaBotao" @click="imprimir(props.row.key)">
               <b-icon icon="print"/>
             </button>
           </b-tooltip>
@@ -259,6 +259,9 @@ export default {
           type: 'is-danger'
         })
       })
+    },
+    imprimir (id) {
+      window.open('http://localhost:8080/#/imprimir/' + id, '_blank')
     },
     rota (caminho) {
       this.$router.push(caminho)

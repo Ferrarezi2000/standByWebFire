@@ -59,7 +59,7 @@
       </div>
       <hr/>
 
-      <div class="dadosPessoais">Ordem de serviço</div>
+      <div class="dadosPessoais">Equipamento</div>
       <div class="columns">
         <div class="column">
           <b-field label="Tipo">
@@ -69,19 +69,11 @@
           <b-field label="Nº Série">
             <div>{{ordem.numeroSerie}}</div>
           </b-field>
-
-          <b-field label="Observações">
-            <div>{{ordem.observacao}}</div>
-          </b-field>
         </div>
 
         <div class="column">
           <b-field label="Marca">
             <div>{{ordem.marca}}</div>
-          </b-field>
-
-          <b-field label="Modelo">
-            <div>{{ordem.modelo}}</div>
           </b-field>
 
           <b-field label="Acessorios">
@@ -90,7 +82,51 @@
         </div>
 
         <div class="column">
+          <b-field label="Modelo">
+            <div>{{ordem.modelo}}</div>
+          </b-field>
 
+          <b-field label="Observações">
+            <div>{{ordem.observacao}}</div>
+          </b-field>
+        </div>
+      </div>
+      <hr/>
+
+      <div class="dadosPessoais">Status</div>
+      <div class="columns" v-if="ordem.cancelada">
+        <div class="column is-3">
+          <b-field label="Status">
+            <div style="color: red; font-weight: bold">CANCELADA</div>
+          </b-field>
+        </div>
+
+        <div class="column">
+          <b-field label="Motivo do Cancelamento">
+            <div>{{ordem.motivoCancelamento}}</div>
+          </b-field>
+        </div>
+      </div>
+
+      <div class="columns" v-if="ordem.finalizada">
+        <div class="column">
+          <b-field label="Status">
+            <div v-if="ordem.finalizada" style="color: green; font-weight: bold">FINALIZADA</div>
+          </b-field>
+        </div>
+
+        <div class="column">
+          <b-field label="Valor">
+            <money :value="ordem.valor" class="input" disabled style="background-color: white; border-color: white"/>
+          </b-field>
+        </div>
+      </div>
+
+      <div class="columns" v-if="!ordem.cancelada && !ordem.finalizada">
+        <div class="column">
+          <b-field label="Status">
+            <div style="color: blue; font-weight: bold">EM ANÁLISE</div>
+          </b-field>
         </div>
       </div>
     </div>

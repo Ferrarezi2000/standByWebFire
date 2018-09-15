@@ -133,9 +133,9 @@ export default {
       ordens: [],
       ordem: {
         observacao: null,
-        finalizado: false,
+        finalizada: false,
         relizado: false,
-        cancelado: false,
+        cancelada: false,
         tipo: null,
         numero: null,
         cliente: {},

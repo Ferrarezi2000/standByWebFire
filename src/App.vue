@@ -4,7 +4,11 @@
 </style>
 <template>
   <div id="app" style="height: 100%">
-    <div class="columns" style="height: 100%; margin: 0 !important;" v-if="$route.path !== '/'">
+    <div v-if="$route.path === '/imprimir/' + $route.params.id">
+      <router-view/>
+    </div>
+
+    <div class="columns" style="height: 100%; margin: 0 !important;" v-else>
       <div class="column is-2 is-paddingless">
         <menu-lateral/>
       </div>
@@ -17,7 +21,7 @@
       </div>
     </div>
 
-    <div v-else>
+    <div v-if="$route.path === '/'">
       <router-view/>
     </div>
   </div>
