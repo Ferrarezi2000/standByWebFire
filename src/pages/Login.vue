@@ -55,12 +55,13 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['registrarAdm']),
+    ...mapMutations(['registrarAdm', 'mudarExibicao']),
     logar () {
       this.loading = true
       firebase.auth().signInWithEmailAndPassword(this.email, this.senha).then(res => {
         let token = Math.random().toString(5)
         this.registrarAdm(token)
+        this.mudarExibicao('programa')
         this.$router.push('/dashboard')
         this.loading = false
       }, res => {

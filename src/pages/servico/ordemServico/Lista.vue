@@ -151,6 +151,7 @@
 <script>
 import { permissao } from '../../../config/permissao'
 import firebase from 'firebase'
+import { mapMutations } from 'vuex'
 
 export default {
   mixins: [permissao],
@@ -176,6 +177,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['mudarExibicao']),
     fecharOrdem (modal) {
       if (modal === 'modalFinalizar') {
         this.loading = true
@@ -261,7 +263,8 @@ export default {
       })
     },
     imprimir (id) {
-      window.open('http://localhost:8080/#/imprimir/' + id, '_blank')
+      this.mudarExibicao('imprimir')
+      this.$router.push('/imprimir/' + id)
     },
     rota (caminho) {
       this.$router.push(caminho)

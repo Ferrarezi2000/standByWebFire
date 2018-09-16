@@ -4,11 +4,11 @@
 </style>
 <template>
   <div id="app" style="height: 100%">
-    <div v-if="$route.path === '/imprimir/' + $route.params.id">
+    <div v-if="getExibir === 'imprimir'">
       <router-view/>
     </div>
 
-    <div class="columns" style="height: 100%; margin: 0 !important;" v-else>
+    <div class="columns" style="height: 100%; margin: 0 !important;" v-if="getExibir === 'programa'">
       <div class="column is-2 is-paddingless">
         <menu-lateral/>
       </div>
@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <div v-if="$route.path === '/'">
+    <div v-if="getExibir === 'login'">
       <router-view/>
     </div>
   </div>
@@ -36,7 +36,7 @@ export default {
   components: {'meu-menu': Menu, 'menu-lateral': MenuLateral},
   name: 'App',
   computed: {
-    ...mapGetters(['getTitulo'])
+    ...mapGetters(['getExibir'])
   }
 }
 </script>

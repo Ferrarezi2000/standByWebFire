@@ -6,6 +6,10 @@
 <template>
   <div class="box page">
     <b-loading :is-full-page="isFullPage" :active.sync="loading" :can-cancel="false"/>
+    <div>
+      <button class="button is-fullwidth" @click="voltar">Voltar</button>
+    </div>
+
     <div class="columns">
       <div class="column">
         <div>Stand By Soluções em Informática</div>
@@ -36,6 +40,7 @@
 
 <script>
 import firebase from 'firebase'
+import { mapMutations } from 'vuex'
 
 export default {
   created () {
@@ -54,6 +59,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['mudarExibicao']),
     carregarOrdem (id) {
       this.loading = true
       firebase.database().ref('/ordemServicos').orderByKey().equalTo(id).on('value', res => {
@@ -69,6 +75,10 @@ export default {
           type: 'is-danger'
         })
       })
+    },
+    voltar () {
+      this.mudarExibicao('programa')
+      this.$router.push('/dashboard')
     }
   }
 }

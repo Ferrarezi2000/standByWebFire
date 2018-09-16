@@ -5,11 +5,15 @@ Vue.use(Vuex)
 
 const state = {
   token: 'hduhduehdeuh',
+  exibir: 'login',
   titulo: 'Cliente'
 }
 const mutations = {
   registrarAdm (state, payload) {
     state.token = payload
+  },
+  mudarExibicao (state, payload) {
+    state.exibir = payload
   },
   inserirTitulo (state, payload) {
     state.titulo = payload
@@ -18,6 +22,9 @@ const mutations = {
 const getters = {
   checkToken () {
     return !!state.token
+  },
+  getExibir () {
+    return state.exibir
   },
   getTitulo () {
     return state.titulo
