@@ -12,6 +12,8 @@ import VisualizarOrdem from '../pages/servico/ordemServico/Visualizar'
 import ListaServicoRealizado from '../pages/servico/servicoRealizado/Lista'
 import ListaServicoCancelado from '../pages/servico/servicoCancelado/Lista'
 import Imprimir from '../pages/servico/ordemServico/Imprimir'
+import Venda from '../pages/venda/Lista'
+import NovaVenda from '../pages/venda/NovaVenda'
 
 Vue.use(Router)
 
@@ -30,6 +32,8 @@ export default new Router({
     {path: '/servicoRealizado', component: ListaServicoRealizado},
     {path: '/servicoCancelado', component: ListaServicoCancelado},
     {path: '/imprimir/:id', component: Imprimir},
-    {path: '/dashboard', component: Dashboard}
+    {path: '/dashboard', component: Dashboard},
+    {path: '/vendas', component: Venda},
+    {path: '/venda/novo', component: NovaVenda}
   ]
 })

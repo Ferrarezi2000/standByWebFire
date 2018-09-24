@@ -18,7 +18,18 @@
       </div>
     </div>
 
-    <b-table :data="ordensServicos" hoverable narrowed
+    <div class="column" style="text-align: right">
+      <b-field>
+        <b-input placeholder="Pesquisar pelo número de série..."
+                 type="search"
+                 icon-pack="fas"
+                 v-model="filtro"
+                 icon="search">
+        </b-input>
+      </b-field>
+    </div>
+
+    <b-table :data="listaFiltrada" hoverable narrowed
              :paginated="isPaginated"
              :per-page="perPage"
              :current-page.sync="currentPage"
@@ -65,11 +76,11 @@
             </button>
           </b-tooltip>
 
-          <b-tooltip label="Imprimir" type="is-black" class="botao">
-            <button class="button is-small tamanhaBotao" @click="rota(props.row.key)">
-              <b-icon icon="print"/>
-            </button>
-          </b-tooltip>
+          <!--<b-tooltip label="Imprimir" type="is-black" class="botao">-->
+            <!--<button class="button is-small tamanhaBotao" @click="imprimir(props.row.key)">-->
+              <!--<b-icon icon="print"/>-->
+            <!--</button>-->
+          <!--</b-tooltip>-->
         </b-table-column>
       </template>
     </b-table>
@@ -79,6 +90,7 @@
 <script>
 import { permissao } from '../../../config/permissao'
 import firebase from 'firebase'
+import { mapMutations } from 'vuex'
 
 export default {
   mixins: [permissao],
@@ -88,6 +100,7 @@ export default {
   },
   data () {
     return {
+      filtro: '',
       ordemSelecionada: null,
       isPaginated: true,
       isPaginationSimple: false,
@@ -99,7 +112,15 @@ export default {
       ordensServicos: []
     }
   },
+  computed: {
+    listaFiltrada () {
+      return this.ordensServicos.filter(i => {
+        return i.numeroSerie.toUpperCase().indexOf(this.filtro.toUpperCase()) > -1
+      })
+    }
+  },
   methods: {
+    ...mapMutations(['mudarExibicao']),
     listarOrdemServico () {
       this.loading = true
       this.ordensServicos = []
@@ -120,6 +141,10 @@ export default {
           type: 'is-danger'
         })
       })
+    },
+    imprimir (id) {
+      this.mudarExibicao('imprimir')
+      this.$router.push('/imprimir/' + id)
     },
     rota (caminho) {
       this.$router.push(caminho)

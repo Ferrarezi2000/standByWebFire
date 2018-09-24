@@ -25,7 +25,18 @@
       </div>
     </div>
 
-    <b-table :data="ordensServicos" hoverable narrowed
+    <div class="column" style="text-align: right">
+      <b-field>
+        <b-input placeholder="Pesquisar pelo número de série..."
+                 type="search"
+                 icon-pack="fas"
+                 v-model="filtro"
+                 icon="search">
+        </b-input>
+      </b-field>
+    </div>
+
+    <b-table :data="listaFiltrada" hoverable narrowed
              :paginated="isPaginated"
              :per-page="perPage"
              :current-page.sync="currentPage"
@@ -64,14 +75,6 @@
         <b-table-column field="numeroSerie" label="Nº Série">
           {{ props.row.numeroSerie }}
         </b-table-column>
-
-        <!--<b-table-column field="acessorios" label="Acessórios">-->
-          <!--{{ props.row.acessorios }}-->
-        <!--</b-table-column>-->
-
-        <!--<b-table-column field="observacao" label="Observações ">-->
-          <!--{{ props.row.observacao }}-->
-        <!--</b-table-column>-->
 
         <b-table-column label="" width="120">
           <b-tooltip label="Finalizar" type="is-black" class="botao">
@@ -161,6 +164,7 @@ export default {
   },
   data () {
     return {
+      filtro: '',
       valorFinalizar: '',
       modalFinalizar: false,
       modalCancelar: false,
@@ -174,6 +178,13 @@ export default {
       loading: false,
       isFullPage: true,
       ordensServicos: []
+    }
+  },
+  computed: {
+    listaFiltrada () {
+      return this.ordensServicos.filter(i => {
+        return i.numeroSerie.toUpperCase().indexOf(this.filtro.toUpperCase()) > -1
+      })
     }
   },
   methods: {

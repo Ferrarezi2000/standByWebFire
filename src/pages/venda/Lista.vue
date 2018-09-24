@@ -14,18 +14,11 @@
 
     <div class="columns">
       <div class="column">
-        <div class="titulo">Produtos</div>
-      </div>
-      <div class="column" style="text-align: right">
-        <b-tooltip label="Atualizar" type="is-black">
-          <button class="button is-small" @click="listarProdutos">
-            <b-icon icon="redo"/>
-          </button>
-        </b-tooltip>
+        <div class="titulo">Vendas</div>
       </div>
     </div>
 
-    <b-table :data="produtos" hoverable narrowed
+    <b-table :data="vendas" hoverable narrowed
              :paginated="isPaginated"
              :per-page="perPage"
              :current-page.sync="currentPage"
@@ -37,30 +30,30 @@
           <small>{{ props.index + 1 }}.</small>
         </b-table-column>
 
-        <b-table-column field="nome" label="Nome" sortable>
-          {{ props.row.nome }}
+        <b-table-column field="data" label="Data Venda" sortable>
+          {{ props.row.data }}
         </b-table-column>
 
-        <b-table-column field="descricao" label="Descrição">
-          {{ props.row.descricao }}
+        <b-table-column field="cliente.nome" label="Cliente" sortable>
+          {{ props.row.cliente.nome }} {{ props.row.cliente.sobrenome }}
         </b-table-column>
 
-        <b-table-column field="quantidade" label="Quantidade">
-          {{ props.row.quantidade }}
+        <b-table-column field="produto.nome" label="Produto" sortable>
+          {{ props.row.produto.nome }}
         </b-table-column>
 
-        <b-table-column field="valor" label="Valor à vista">
-          {{ props.row.valor | currency }}
+        <b-table-column field="valor" label="Valor">
+          {{ props.row.valor | currency}}
         </b-table-column>
 
-        <b-table-column field="valor" label="Valor à prazo">
-          {{ props.row.valorDesconto | currency }}
+        <b-table-column field="formaPagamento" label="Forma de Pagamento">
+          {{ props.row.formaPagamento }}
         </b-table-column>
 
         <b-table-column label="" width="90">
-          <b-tooltip label="Editar" type="is-black" class="botao">
-            <button class="button is-small tamanhaBotao" @click="editar(props.row.key)">
-              <b-icon icon="pencil-alt"/>
+          <b-tooltip label="Visualizar" type="is-black" class="botao">
+            <button class="button is-small tamanhaBotao" @click="visualizar(props.row.key)">
+              <b-icon icon="eye"/>
             </button>
           </b-tooltip>
         </b-table-column>
@@ -70,14 +63,14 @@
 </template>
 
 <script>
-import { permissao } from '../../../config/permissao'
+import { permissao } from '../../config/permissao'
 import firebase from 'firebase'
 
 export default {
   mixins: [permissao],
   created () {
     this.checarLogado()
-    this.listarProdutos()
+    this.listarVendas()
   },
   data () {
     return {
@@ -88,18 +81,18 @@ export default {
       perPage: 10,
       loading: false,
       isFullPage: true,
-      produtos: []
+      vendas: []
     }
   },
   methods: {
-    listarProdutos () {
+    listarVendas () {
       this.loading = true
-      this.produtos = []
-      firebase.database().ref('/produtos').on('value', res => {
-        res.forEach(cliente => {
-          let item = cliente.val()
-          item.key = cliente.key
-          this.produtos.push(item)
+      this.vendas = []
+      firebase.database().ref('/vendas').on('value', res => {
+        res.forEach(venda => {
+          let item = venda.val()
+          item.key = venda.key
+          this.vendas.push(item)
         })
         this.loading = false
       }, res => {
@@ -111,9 +104,7 @@ export default {
         })
       })
     },
-    editar (id) {
-      this.$router.push('/produto/' + id)
-    }
+    visualizar () {}
   }
 }
 </script>

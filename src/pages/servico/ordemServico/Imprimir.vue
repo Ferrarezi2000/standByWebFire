@@ -1,40 +1,116 @@
 <style scoped>
   .box {background-color: white; padding: 20px}
-  .page {margin: 20px 20px; border-radius: 0 !important}
+  .page {margin: 5px; border-radius: 0 !important}
+  .borda {border: 1px solid darkgray}
 </style>
 
 <template>
   <div class="box page">
     <b-loading :is-full-page="isFullPage" :active.sync="loading" :can-cancel="false"/>
-    <div>
-      <button class="button is-fullwidth" @click="voltar">Voltar</button>
-    </div>
 
+    <div style="text-align: center; font-weight: bold; background-color: whitesmoke;
+    padding: 10px; margin-bottom: 20px; font-size: 25px">
+      Ordem de Serviço
+    </div>
     <div class="columns">
-      <div class="column">
-        <div>Stand By Soluções em Informática</div>
+      <div class="column borda">
+        <div style="text-align: center; font-weight: bold; background-color: whitesmoke; padding: 10px; font-size: 20px">
+          Stand By Soluções em Informática
+        </div>
         <div>Av. Carlos Alberto Araújo, nº 14 - Vila Laroca</div>
         <div>CNPJ: 0212120202121202021210</div>
+        <div>email@email.com</div>
         <div>(32) 98898-1758 - Thiago Ferrarezi</div>
         <div>(32) 98898-1758 - Anderson Machado</div>
       </div>
-      <div class="column is-4">
-        <div>Comprovante de entrega do Cliente</div>
-        <div>Data expedição: {{ordem.data}}</div>
-        <div>Número O.S.: {{ordem.numero}}</div>
+      <div class="column is-5 borda">
+        <div style="text-align: center; font-weight: bold; background-color: whitesmoke; padding: 10px; font-size: 20px">
+          Comprovante de entrega
+        </div>
+        <div class="columns">
+          <div class="column">
+            <strong>
+              <div style="text-align: center; margin-top: 20px">Data expedição</div>
+              <div style="text-align: center">{{ordem.data}}</div>
+            </strong>
+          </div>
+          <div class="column">
+            <strong>
+              <div style="text-align: center; margin-top: 20px">Número O.S.</div>
+              <div style="text-align: center">{{ordem.numero}}</div>
+            </strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center; font-weight: bold; background-color: whitesmoke;
+    padding: 10px; margin-bottom: 20px; font-size: 20px">
+      Cliente
+    </div>
+
+    <div class="columns borda">
+      <div class="column is-2">
+        <div><strong>Nome:</strong></div>
+        <div>
+          <strong>Endereço:</strong>
+        </div>
+        <div>
+          <strong>Telefone:</strong>
+        </div>
+        <div>
+          <strong>Email:</strong>
+        </div>
+      </div>
+      <div class="column">
+        <div>
+          {{ordem.cliente.nome}} {{ordem.cliente.sobrenome}}
+        </div>
+        <div>
+          {{ordem.cliente.endereco.logradouro}}, nº {{ordem.cliente.endereco.numero}} - {{ordem.cliente.endereco.bairro}}
+        </div>
+        <div>
+          Fixo - {{ordem.cliente.contato.fixo}}, Celular - {{ordem.cliente.contato.celular}}
+        </div>
+        <div>
+          {{ordem.cliente.contato.email}}
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center; font-weight: bold; background-color: whitesmoke;
+    padding: 10px; margin-bottom: 20px; font-size: 20px">Equipamento</div>
+    <div class="columns borda">
+      <div class="column is-2">
+        <div><strong>Marca:</strong></div>
+        <div><strong>Modelo:</strong></div>
+        <div><strong>Número de Série:</strong></div>
+        <div><strong>Acessórios:</strong></div>
+      </div>
+      <div class="column">
+        <div>{{ordem.marca}}</div>
+        <div>{{ordem.modelo}}</div>
+        <div>{{ordem.numeroSerie}}</div>
+        <div>{{ordem.acessorios}}</div>
+      </div>
+    </div>
+
+    <div class="columns borda">
+      <div class="column">
+        <div><strong>Observações / Problema relatado</strong></div>
+        <div>{{ordem.observacao}}</div>
       </div>
     </div>
     <hr/>
 
-    <div class="columns">
+    <div class="columns borda">
       <div class="column">
-        <div>Cliente: {{ordem.cliente.nome}} {{ordem.cliente.sobrenome}}</div>
-        <div>Endereço: {{ordem.cliente.endereco.logradouro}}, nº {{ordem.cliente.endereco.numero}} - {{ordem.cliente.endereco.bairro}}</div>
-        <div>Contato: {{ordem.cliente.contato.fixo}}, {{ordem.cliente.contato.celular}}, {{ordem.cliente.contato.email}}</div>
+        <div style="text-align: center"><strong>Assinatura ADM</strong></div>
+        <div style="margin-bottom: 60px; margin-top: 60px"></div>
       </div>
-      <div class="column"></div>
     </div>
-    {{ordem}}
+
+    <button class="button is-fullwidth" @click="voltar">Voltar</button>
   </div>
 </template>
 
