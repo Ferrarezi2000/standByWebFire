@@ -2,10 +2,6 @@
   .box {background-color: white; padding: 20px}
   .page {margin: 30px 50px; border-radius: 0 !important;}
   .titulo {font-weight: bold; font-size: 25px}
-  .tamanhaBotao {font-size: 10px}
-  td:last-child {text-align: right}
-  .botao {visibility: hidden}
-  tr:hover .botao {visibility: visible}
 </style>
 
 <template>
@@ -14,7 +10,15 @@
 
     <div class="columns">
       <div class="column">
-        <div class="titulo">Vendas</div>
+        <div class="titulo">Outros</div>
+      </div>
+
+      <div class="column" style="text-align: right">
+        <b-tooltip label="Adicionar" type="is-black">
+          <button class="button is-small" @click="rota('/venda/outros/novo')">
+            <b-icon icon="plus"/>
+          </button>
+        </b-tooltip>
       </div>
     </div>
 
@@ -24,7 +28,7 @@
              :current-page.sync="currentPage"
              :pagination-simple="isPaginationSimple"
              :default-sort-direction="defaultSortDirection"
-             default-sort="data">
+             default-sort="nome">
       <template slot-scope="props">
         <b-table-column label="#" width="50">
           <small>{{ props.index + 1 }}.</small>
@@ -34,34 +38,21 @@
           {{ props.row.data }}
         </b-table-column>
 
-        <b-table-column field="cliente.nome" label="Cliente" sortable>
-          {{ props.row.cliente.nome }} {{ props.row.cliente.sobrenome }}
+        <b-table-column field="descricao" label="Descrição" sortable>
+          {{ props.row.descricao }}
         </b-table-column>
 
-        <b-table-column field="produto.nome" label="Produto" sortable>
-          {{ props.row.produto.nome }}
+        <b-table-column field="formaPagamento" label="Forma Pagamento" sortable>
+          {{ props.row.formaPagamento }}
+        </b-table-column>
+
+        <b-table-column field="parcelado" label="Parcelado">
+          <span v-if="props.row.parcelado === 'sim'">SIM</span>
+          <span v-else>NÃO</span>
         </b-table-column>
 
         <b-table-column field="valor" label="Valor">
           {{ props.row.valor | currency}}
-        </b-table-column>
-
-        <b-table-column field="formaPagamento" label="Forma de Pagamento">
-          {{ props.row.formaPagamento }}
-        </b-table-column>
-
-        <b-table-column label="" width="90">
-          <b-tooltip label="Visualizar" type="is-black" class="botao">
-            <button class="button is-small tamanhaBotao" @click="visualizar(props.row.key)">
-              <b-icon icon="eye"/>
-            </button>
-          </b-tooltip>
-
-          <b-tooltip label="Imprimir" type="is-black" class="botao">
-            <button class="button is-small tamanhaBotao" @click="imprimir(props.row.key)">
-              <b-icon icon="print"/>
-            </button>
-          </b-tooltip>
         </b-table-column>
       </template>
     </b-table>
@@ -69,7 +60,7 @@
 </template>
 
 <script>
-import { permissao } from '../../config/permissao'
+import { permissao } from '../../../config/permissao'
 import firebase from 'firebase'
 import { mapMutations } from 'vuex'
 
@@ -100,7 +91,7 @@ export default {
         res.forEach(venda => {
           let item = venda.val()
           item.key = venda.key
-          if (item.tipo !== 'outros') {
+          if (item.tipo === 'outros') {
             this.vendas.push(item)
           }
         })
@@ -114,12 +105,8 @@ export default {
         })
       })
     },
-    imprimir (id) {
-      this.mudarExibicao('imprimir')
-      this.$router.push('/venda/imprimir/' + id)
-    },
-    visualizar (id) {
-      this.$router.push('/venda/visualizar/' + id)
+    rota (caminho) {
+      this.$router.push(caminho)
     }
   }
 }

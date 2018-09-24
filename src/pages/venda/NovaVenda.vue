@@ -28,8 +28,8 @@
         </b-select>
       </b-field>
 
-      <div class="columns" v-if="venda.cliente.key">
-        <div class="column is-8">
+      <div v-if="venda.cliente.key">
+        <div>
           <div class="dadosPessoais">Dados Cliente</div>
           <div class="columns">
             <div class="column">
@@ -50,8 +50,8 @@
             </div>
           </div>
         </div>
-
-        <div class="column">
+<hr/>
+        <div>
           <div class="dadosPessoais">Endereço</div>
           <div class="columns">
             <div class="column">
@@ -71,25 +71,25 @@
 
       <div class="columns">
         <div class="column">
-      <b-field label="Produto">
-        <b-select placeholder="Selecione o cliente" expanded v-model="venda.produto">
-          <option
-            v-for="(item, index) in produtos"
-            :value="item"
-            :key="index">
-            {{ item.nome }} - {{ item.descricao }} - {{ item.marca }}
-          </option>
-        </b-select>
-      </b-field>
+          <b-field label="Produto">
+            <b-select placeholder="Selecione o cliente" expanded v-model="venda.produto">
+              <option
+                v-for="(item, index) in produtos"
+                :value="item"
+                :key="index">
+                {{ item.nome }} - {{ item.descricao }} - {{ item.marca }}
+              </option>
+            </b-select>
+          </b-field>
         </div>
         <div class="column is-2">
           <b-field label="Parcelado?">
             <div class="block">
-              <b-radio v-model="valor"
+              <b-radio v-model="venda.parcelado"
                        native-value="sim">
                 SIM
               </b-radio>
-              <b-radio v-model="valor"
+              <b-radio v-model="venda.parcelado"
                        native-value="nao">
                 NÃO
               </b-radio>
@@ -99,12 +99,12 @@
         <div class="column is-2">
           <b-field label="Cartão?">
             <div class="block">
-              <b-radio v-model="cartao"
-                       native-value="sim">
+              <b-radio v-model="venda.formaPagamento"
+                       native-value="Cartão">
                 SIM
               </b-radio>
-              <b-radio v-model="cartao"
-                       native-value="nao">
+              <b-radio v-model="venda.formaPagamento"
+                       native-value="Dinheiro">
                 NÃO
               </b-radio>
             </div>
@@ -120,7 +120,6 @@
               <b-field label="Nome">
                 <div>{{ venda.produto.nome }}</div>
               </b-field>
-
             </div>
             <div class="column">
               <b-field label="Descrição">
@@ -139,7 +138,7 @@
             </div>
             <div class="column">
               <b-field label="Valor">
-                <money :value="venda.produto.valorDesconto" class="input" disabled v-if="valor === 'sim'"
+                <money :value="venda.produto.valorDesconto" class="input" disabled v-if="venda.parcelado === 'sim'"
                        style="background-color: white; border-color: white"/>
                 <money :value="venda.produto.valor" class="input" disabled v-else
                        style="background-color: white; border-color: white"/>
@@ -179,9 +178,10 @@ export default {
       isFullPage: true,
       clientes: [],
       produtos: [],
-      valor: 'nao',
-      cartao: 'nao',
       venda: {
+        tipo: 'venda',
+        formaPagamento: '',
+        parcelado: '',
         cliente: {},
         produto: {},
         data: null
@@ -191,7 +191,7 @@ export default {
   computed: {
     habilitarSavar () {
       let retorno = true
-      if (this.venda.cliente.nome && this.venda.produto.nome) {
+      if (this.venda.cliente.nome && this.venda.produto.nome && this.venda.parcelado && this.venda.formaPagamento) {
         retorno = false
       }
       return retorno
@@ -259,15 +259,10 @@ export default {
     },
     salvar () {
       this.loading = true
-      if (this.valor === 'sim') {
+      if (this.venda.parcelado === 'sim') {
         this.venda.valor = this.venda.produto.valorDesconto
       } else {
         this.venda.valor = this.venda.produto.valor
-      }
-      if (this.cartao === 'sim') {
-        this.venda.formaPagamento = 'Cartão'
-      } else {
-        this.venda.formaPagamento = 'Dinheiro'
       }
       firebase.database().ref('/vendas').push(this.venda).then(res => {
         this.loading = false

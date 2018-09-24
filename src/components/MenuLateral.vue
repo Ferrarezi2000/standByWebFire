@@ -15,7 +15,7 @@
 <template>
   <div class="menuLateral">
     <b-collapse class="card itens borda" >
-      <div slot="trigger" slot-scope="props" class="card-header">
+      <div slot="trigger" slot-scope="props" class="card-header" @click="rota('/dashboard')">
         <p class="card-header-title">
           <b-icon icon="power-off" style="color: rgb(3, 155, 229); margin-top: 4px"/>
           <span style="font-size: 20px">Stand By</span>
@@ -66,7 +66,7 @@
           </div>
 
           <div style="cursor: pointer" class="itemSelecao" @click="rota('/produto/novo')">
-            <b-icon icon="user" size="is-small"/>
+            <b-icon icon="archive" size="is-small"/>
             <span>Novo produto</span>
           </div>
         </div>
@@ -121,13 +121,38 @@
           </div>
 
           <div style="cursor: pointer; margin-bottom: 20px" class="itemSelecao" @click="rota('/venda/novo')">
-            <b-icon icon="user" size="is-small"/>
-            <span>Novo venda</span>
+            <b-icon icon="user-tag" size="is-small"/>
+            <span>Nova venda</span>
           </div>
 
           <div style="cursor: pointer" class="itemSelecao" @click="rota('/venda/outros')">
-            <b-icon icon="user" size="is-small"/>
-            <span>Outros serviços</span>
+            <b-icon icon="align-justify" size="is-small"/>
+            <span>Outros</span>
+          </div>
+        </div>
+      </div>
+    </b-collapse>
+
+    <b-collapse class="card itens bordaItens" :open="false">
+      <div slot="trigger" slot-scope="props" class="card-header" style="height: 80px">
+        <div style="margin: 12px 15px">
+          <div style="font-weight: 500">Despesa</div>
+          <div style="color: rgba(255,255,255,.7); font-size: 10px">Despesas cadastradas em nosso sistema</div>
+        </div>
+        <a class="card-header-icon" style="color: white">
+          <b-icon :icon="props.open ? 'angle-up' : 'angle-down'"/>
+        </a>
+      </div>
+      <div class="card-content itemOpen">
+        <div class="content" style="color: rgba(255,255,255,.7)">
+          <div style="margin-bottom: 20px; cursor: pointer" class="itemSelecao" @click="rota('/despesas')">
+            <b-icon icon="clipboard-list" size="is-small"/>
+            <span>Lista</span>
+          </div>
+
+          <div style="cursor: pointer; margin-bottom: 20px" class="itemSelecao" @click="rota('/despesa/novo')">
+            <b-icon icon="weight-hanging" size="is-small"/>
+            <span>Nova despesa</span>
           </div>
         </div>
       </div>

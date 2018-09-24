@@ -14,6 +14,12 @@ import ListaServicoCancelado from '../pages/servico/servicoCancelado/Lista'
 import Imprimir from '../pages/servico/ordemServico/Imprimir'
 import Venda from '../pages/venda/Lista'
 import NovaVenda from '../pages/venda/NovaVenda'
+import VisualizarVenda from '../pages/venda/Visualizar'
+import ImprimirVenda from '../pages/venda/Imprimir'
+import VendaOutrosLista from '../pages/venda/outros/Lista'
+import VendaOutrosNovo from '../pages/venda/outros/Novo'
+import DespesaNovo from '../pages/despesa/Novo'
+import Despesas from '../pages/despesa/Lista'
 
 Vue.use(Router)
 
@@ -34,6 +40,12 @@ export default new Router({
     {path: '/imprimir/:id', component: Imprimir},
     {path: '/dashboard', component: Dashboard},
     {path: '/vendas', component: Venda},
-    {path: '/venda/novo', component: NovaVenda}
+    {path: '/venda/novo', component: NovaVenda},
+    {path: '/venda/visualizar/:id', component: VisualizarVenda},
+    {path: '/venda/imprimir/:id', component: ImprimirVenda},
+    {path: '/venda/outros', component: VendaOutrosLista},
+    {path: '/venda/outros/novo', component: VendaOutrosNovo},
+    {path: '/despesa/novo', component: DespesaNovo},
+    {path: '/despesas', component: Despesas}
   ]
 })
