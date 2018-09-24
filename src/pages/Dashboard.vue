@@ -115,6 +115,7 @@ export default {
     return {
       dataAtual: null,
       totalCaixa: 0,
+      loading: false,
       listaVendas: [],
       listaClientes: [],
       listaServicos: [],
