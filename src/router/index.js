@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from '../pages/Login'
 import Dashboard from '../pages/Dashboard'
 import Clientes from '../pages/cliente/Lista'
+import ClienteVisualizar from '../pages/cliente/Visualizar'
 import NovoCliente from '../pages/cliente/NovoCliente'
 import Produtos from '../pages/produto/Lista'
 import NovoProduto from '../pages/produto/NovoProduto'
@@ -27,6 +28,7 @@ export default new Router({
   routes: [
     {path: '/', component: Login},
     {path: '/clientes', component: Clientes},
+    {path: '/cliente/visualizar/:id', component: ClienteVisualizar},
     {path: '/cliente/novo', component: NovoCliente},
     {path: '/cliente/:id', component: NovoCliente},
     {path: '/produtos', component: Produtos},

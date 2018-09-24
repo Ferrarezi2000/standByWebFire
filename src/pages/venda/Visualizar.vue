@@ -137,7 +137,6 @@ export default {
   mixins: [permissao],
   directives: { mask },
   created () {
-    this.checarLogado()
     this.carregarVenda(this.$route.params.id)
   },
   data () {

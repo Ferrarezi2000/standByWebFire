@@ -1,15 +1,17 @@
-import { mapGetters } from 'vuex'
+// import firebase from 'firebase'
 
 export const permissao = {
   created () {},
-  computed: {
-    ...mapGetters(['checkToken'])
-  },
   methods: {
-    checarLogado () {
-      if (!this.checkToken) {
-        this.$router.push('/')
-      }
-    }
+    // checarLogado () {
+    //   let usuario = firebase.auth().currentUser
+    //   window.setInterval(this.rota(usuario), 10000)
+    // },
+    // rota (usuario) {
+    //   console.log(usuario)
+    //   if (!usuario) {
+    //     this.$router.push('/')
+    //   }
+    // }
   }
 }

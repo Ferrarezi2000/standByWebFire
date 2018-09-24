@@ -4,24 +4,27 @@
 </style>
 <template>
   <div id="app" style="height: 100%">
-    <div v-if="getExibir === 'imprimir'">
-      <router-view/>
-    </div>
+    <!--<div v-if="getExibir === 'imprimir'">-->
+      <!--<router-view/>-->
+    <!--</div>-->
 
-    <div class="columns" style="height: 100%; margin: 0 !important;" v-if="getExibir === 'programa'">
-      <div class="column is-2 is-paddingless">
-        <menu-lateral/>
-      </div>
+    <!--<div class="columns" style="height: 100%; margin: 0 !important;" v-if="getExibir === 'programa'">-->
+      <!--<div class="column is-2 is-paddingless">-->
+        <!--<menu-lateral/>-->
+      <!--</div>-->
 
-      <div class="column is-paddingless">
-        <div class="menuTop has-shadow" style="padding: 10px 0 0 20px; position: fixed; margin-left: 243px">
-          <span class="titulo">Stand By - Soluções em Informática</span>
-        </div>
-        <router-view style="margin-top: 80px"/>
-      </div>
-    </div>
+      <!--<div class="column is-paddingless">-->
+        <!--<div class="menuTop has-shadow" style="padding: 10px 0 0 20px; position: fixed; margin-left: 243px">-->
+          <!--<span class="titulo">Stand By - Soluções em Informática</span>-->
+        <!--</div>-->
+        <!--<router-view style="margin-top: 80px"/>-->
+      <!--</div>-->
+    <!--</div>-->
 
-    <div v-if="getExibir === 'login'">
+    <!--<div v-if="getExibir === 'login'">-->
+      <!--<router-view/>-->
+    <!--</div>-->
+    <div>
       <router-view/>
     </div>
   </div>

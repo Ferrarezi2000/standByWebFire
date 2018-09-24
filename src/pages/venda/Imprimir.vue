@@ -109,7 +109,6 @@
 
 <script>
 import firebase from 'firebase'
-import { mapMutations } from 'vuex'
 
 export default {
   created () {
@@ -126,7 +125,6 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['mudarExibicao']),
     carregarVenda (id) {
       this.loading = true
       firebase.database().ref('/vendas').orderByKey().equalTo(id).on('value', res => {
@@ -144,8 +142,7 @@ export default {
       })
     },
     voltar () {
-      this.mudarExibicao('programa')
-      this.$router.push('/dashboard')
+      this.$router.push('/vendas')
     }
   }
 }

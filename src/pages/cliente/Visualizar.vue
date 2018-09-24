@@ -24,20 +24,7 @@
           <div class="box page">
             <b-loading :is-full-page="isFullPage" :active.sync="loading" :can-cancel="false"/>
 
-            <div class="columns">
-              <div class="column">
-                <div class="titulo" v-if="$route.params.id">Editar Cliente</div>
-                <div class="titulo" v-else>Novo Cliente</div>
-              </div>
-
-              <div class="column" v-if="$route.params.id" style="text-align: right">
-                <b-tooltip label="Apagar" type="is-black">
-                  <button class="button is-small is-danger" @click="deletar">
-                    <b-icon icon="trash" />
-                  </button>
-                </b-tooltip>
-              </div>
-            </div>
+            <div class="titulo">Visualizar Cliente</div>
 
             <div style="margin: 0 20px 0 20px">
               <div class="dadosPessoais">Dados Pessoais</div>
@@ -45,21 +32,21 @@
               <div class="columns">
                 <div class="column">
                   <b-field label="Nome">
-                    <b-input v-model="cliente.nome"/>
+                    <b-input v-model="cliente.nome" disabled/>
                   </b-field>
 
                   <b-field label="CPF">
-                    <b-input v-model="cliente.cpf" v-mask="['###.###.###-##', '##.###.###/####-##']"/>
+                    <b-input v-model="cliente.cpf" v-mask="['###.###.###-##', '##.###.###/####-##']" disabled/>
                   </b-field>
                 </div>
 
                 <div class="column">
                   <b-field label="Sobrenome">
-                    <b-input v-model="cliente.sobrenome"/>
+                    <b-input v-model="cliente.sobrenome" disabled/>
                   </b-field>
 
                   <b-field label="Data Nascimento">
-                    <date-picker v-model="cliente.dataNascimento" lang="pt-br" format="DD/MM/YYYY"
+                    <date-picker v-model="cliente.dataNascimento" lang="pt-br" format="DD/MM/YYYY" disabled
                                  confirm style="width: 100%"/>
                   </b-field>
                 </div>
@@ -70,19 +57,19 @@
               <div class="columns">
                 <div class="column">
                   <b-field label="Telefone Fixo">
-                    <b-input v-model="cliente.contato.fixo"  v-mask="['(##) ####-####', '(##) #####-####']"/>
+                    <b-input v-model="cliente.contato.fixo" disabled v-mask="['(##) ####-####', '(##) #####-####']"/>
                   </b-field>
                 </div>
 
                 <div class="column">
                   <b-field label="Telefone Celular">
-                    <b-input v-model="cliente.contato.celular"  v-mask="['(##) ####-####', '(##) #####-####']"/>
+                    <b-input v-model="cliente.contato.celular" disabled  v-mask="['(##) ####-####', '(##) #####-####']"/>
                   </b-field>
                 </div>
 
                 <div class="column">
                   <b-field label="Email">
-                    <b-input v-model="cliente.contato.email"/>
+                    <b-input v-model="cliente.contato.email" disabled/>
                   </b-field>
                 </div>
               </div>
@@ -92,26 +79,21 @@
               <div class="columns">
                 <div class="column">
                   <b-field label="Logradouro">
-                    <b-input v-model="cliente.endereco.logradouro"/>
+                    <b-input v-model="cliente.endereco.logradouro" disabled/>
                   </b-field>
                 </div>
 
                 <div class="column">
                   <b-field label="Bairro">
-                    <b-input v-model="cliente.endereco.bairro"/>
+                    <b-input v-model="cliente.endereco.bairro" disabled/>
                   </b-field>
                 </div>
 
                 <div class="column is-2">
                   <b-field label="Número">
-                    <b-input v-model="cliente.endereco.numero"/>
+                    <b-input v-model="cliente.endereco.numero" disabled/>
                   </b-field>
                 </div>
-              </div>
-              <hr/>
-
-              <div style="width: 100%; text-align: right">
-                <button class="button is-info is-fullwidth" @click="addEditar" :disabled="habilitarSavar">Salvar</button>
               </div>
             </div>
           </div>
@@ -151,16 +133,6 @@ export default {
       }
     }
   },
-  computed: {
-    habilitarSavar () {
-      let retorno = true
-      if (this.cliente.nome && this.cliente.sobrenome && this.cliente.dataNascimento && this.cliente.cpf && this.cliente.contato.fixo && this.cliente.contato.email &&
-        this.cliente.contato.celular && this.cliente.endereco.logradouro && this.cliente.endereco.numero && this.cliente.endereco.bairro) {
-        retorno = false
-      }
-      return retorno
-    }
-  },
   methods: {
     carregarCliente (id) {
       this.loading = true
@@ -197,71 +169,6 @@ export default {
         let ano = data.getFullYear()
         this.cliente.dataNascimento = dia + '/' + mes + '/' + ano + ''
       }
-    },
-    addEditar () {
-      if (this.$route.params.id) {
-        this.editar()
-      } else {
-        this.salvar()
-      }
-    },
-    deletar () {
-      firebase.database().ref('/clientes').child(this.$route.params.id).remove().then(res => {
-        this.loading = false
-        this.$toast.open({
-          duration: 3000,
-          message: `Cliente deletado com sucesso!`,
-          type: 'is-success'
-        }, res => {
-          this.loading = false
-          this.$toast.open({
-            duration: 3000,
-            message: `Não foi possivel cadastrar cliente`,
-            type: 'is-danger'
-          })
-        })
-        this.$router.push('/clientes')
-      })
-    },
-    editar () {
-      this.loading = true
-      this.ajustarNascimento()
-      firebase.database().ref('/clientes').child(this.$route.params.id).set(this.cliente).then(res => {
-        this.loading = false
-        this.$toast.open({
-          duration: 3000,
-          message: `Cliente cadastrado com sucesso!`,
-          type: 'is-success'
-        })
-        this.$router.push('/clientes')
-      }, res => {
-        this.loading = false
-        this.$toast.open({
-          duration: 3000,
-          message: `Não foi possivel cadastrar cliente`,
-          type: 'is-danger'
-        })
-      })
-    },
-    salvar () {
-      this.loading = true
-      this.ajustarNascimento()
-      firebase.database().ref('clientes').push(this.cliente).then(res => {
-        this.loading = false
-        this.$toast.open({
-          duration: 3000,
-          message: `Cliente cadastrado com sucesso!`,
-          type: 'is-success'
-        })
-        this.$router.push('/clientes')
-      }, res => {
-        this.loading = false
-        this.$toast.open({
-          duration: 3000,
-          message: `Não foi possivel cadastrar cliente`,
-          type: 'is-danger'
-        })
-      })
     }
   }
 }

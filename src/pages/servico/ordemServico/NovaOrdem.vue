@@ -3,107 +3,126 @@
   .page {margin: 30px 50px; border-radius: 0 !important;}
   .titulo {font-weight: bold; font-size: 25px; margin-bottom: 20px}
   .dadosPessoais {font-weight: 500; margin: 20px 20px 20px 0; color: rgb(3, 155, 229); font-size: 17px}
+  .tituloStand {font-size: 18px; color: white; font-weight: bold;}
+  .menuTop {background-color: rgb(3, 155, 229); width: 100%; height: 49px; left: 0; top: 0;
+    position: relative; box-shadow: 0 3px 3px rgba(0,0,0,0.3)}
 </style>
 
 <template>
-  <div class="box page">
-    <b-loading :is-full-page="isFullPage" :active.sync="loading" :can-cancel="false"/>
-
-    <div class="columns">
-      <div class="titulo column">Nova Ordem de Serviço</div>
-      <div class="column" style="text-align: right; font-weight: bold">
-        <div>{{ ordem.numero }}</div>
-        <div>{{ dataAtual | moment("ddd, DD MMM YYYY HH:mm") }}</div>
+  <div>
+    <b-loading :is-full-page="true" :active.sync="loading" :can-cancel="false"/>
+    <div class="columns" style="height: 100%; margin: 0 !important;">
+      <div class="column is-2 is-paddingless">
+        <menu-lateral/>
       </div>
-    </div>
 
-    <div style="margin: 0 20px 0 20px">
-      <b-field label="Cliente">
-        <b-select placeholder="Selecione o cliente" expanded v-model="ordem.cliente">
-          <option
-            v-for="(item, index) in clientes"
-            :value="item"
-            :key="index">
-            {{ item.nome }} {{ item.sobrenome }}
-          </option>
-        </b-select>
-      </b-field>
+      <div class="column is-paddingless">
+        <div class="menuTop has-shadow" style="padding: 10px 0 0 20px; position: fixed; margin-left: 243px">
+          <span class="tituloStand">Stand By - Soluções em Informática</span>
+        </div>
+        <div style="margin-top: 80px">
+          <div class="box page">
+            <b-loading :is-full-page="isFullPage" :active.sync="loading" :can-cancel="false"/>
 
-      <div class="columns" v-if="ordem.cliente.key">
-        <div class="column is-8">
-          <div class="dadosPessoais">Dados Cliente</div>
-          <div class="columns">
-            <div class="column">
-              <b-field label="Nome">
-                <div>{{ ordem.cliente.nome }} {{ ordem.cliente.sobrenome }}</div>
-              </b-field>
-
+            <div class="columns">
+              <div class="titulo column">Nova Ordem de Serviço</div>
+              <div class="column" style="text-align: right; font-weight: bold">
+                <div>{{ ordem.numero }}</div>
+                <div>{{ dataAtual | moment("ddd, DD MMM YYYY HH:mm") }}</div>
+              </div>
             </div>
-            <div class="column">
-              <b-field label="CPF/CNPJ">
-                <div>{{ ordem.cliente.cpf }}</div>
+
+            <div style="margin: 0 20px 0 20px">
+              <b-field label="Cliente">
+                <b-select placeholder="Selecione o cliente" expanded v-model="ordem.cliente">
+                  <option
+                    v-for="(item, index) in clientes"
+                    :value="item"
+                    :key="index">
+                    {{ item.nome }} {{ item.sobrenome }}
+                  </option>
+                </b-select>
               </b-field>
-            </div>
-            <div class="column">
-              <b-field label="Data Nascimento">
-                <div>{{ ordem.cliente.dataNascimento }}</div>
-              </b-field>
+
+              <div class="columns" v-if="ordem.cliente.key">
+                <div class="column is-8">
+                  <div class="dadosPessoais">Dados Cliente</div>
+                  <div class="columns">
+                    <div class="column">
+                      <b-field label="Nome">
+                        <div>{{ ordem.cliente.nome }} {{ ordem.cliente.sobrenome }}</div>
+                      </b-field>
+
+                    </div>
+                    <div class="column">
+                      <b-field label="CPF/CNPJ">
+                        <div>{{ ordem.cliente.cpf }}</div>
+                      </b-field>
+                    </div>
+                    <div class="column">
+                      <b-field label="Data Nascimento">
+                        <div>{{ ordem.cliente.dataNascimento }}</div>
+                      </b-field>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="column">
+                  <div class="dadosPessoais">Endereço</div>
+                  <div class="columns">
+                    <div class="column">
+                      <b-field label="Logradouro">
+                        <div>{{ ordem.cliente.endereco.logradouro }}, {{ ordem.cliente.endereco.numero }}</div>
+                      </b-field>
+                    </div>
+                    <div class="column">
+                      <b-field label="Bairro">
+                        <div>{{ ordem.cliente.endereco.bairro }}</div>
+                      </b-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr/>
+
+              <div class="dadosPessoais">Ordem de serviço</div>
+              <div class="columns">
+                <div class="column">
+                  <b-field label="Tipo">
+                    <b-input v-model="ordem.tipo" />
+                  </b-field>
+
+                  <b-field label="Nº Série">
+                    <b-input v-model="ordem.numeroSerie" />
+                  </b-field>
+
+                  <b-field label="Observações">
+                    <b-input v-model="ordem.observacao" type="textarea"/>
+                  </b-field>
+                </div>
+
+                <div class="column">
+                  <b-field label="Marca">
+                    <b-input v-model="ordem.marca" />
+                  </b-field>
+
+                  <b-field label="Modelo">
+                    <b-input v-model="ordem.modelo" />
+                  </b-field>
+
+                  <b-field label="Acessorios">
+                    <b-input v-model="ordem.acessorios" type="textarea"/>
+                  </b-field>
+                </div>
+              </div>
+              <hr/>
+
+              <div style="width: 100%; text-align: right">
+                <button class="button is-info is-fullwidth" @click="salvar" :disabled="habilitarSavar">Salvar</button>
+              </div>
             </div>
           </div>
         </div>
-
-        <div class="column">
-          <div class="dadosPessoais">Endereço</div>
-          <div class="columns">
-            <div class="column">
-              <b-field label="Logradouro">
-                <div>{{ ordem.cliente.endereco.logradouro }}, {{ ordem.cliente.endereco.numero }}</div>
-              </b-field>
-            </div>
-            <div class="column">
-              <b-field label="Bairro">
-                <div>{{ ordem.cliente.endereco.bairro }}</div>
-              </b-field>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr/>
-
-      <div class="dadosPessoais">Ordem de serviço</div>
-      <div class="columns">
-        <div class="column">
-          <b-field label="Tipo">
-            <b-input v-model="ordem.tipo" />
-          </b-field>
-
-          <b-field label="Nº Série">
-            <b-input v-model="ordem.numeroSerie" />
-          </b-field>
-
-          <b-field label="Observações">
-            <b-input v-model="ordem.observacao" type="textarea"/>
-          </b-field>
-        </div>
-
-        <div class="column">
-          <b-field label="Marca">
-            <b-input v-model="ordem.marca" />
-          </b-field>
-
-          <b-field label="Modelo">
-            <b-input v-model="ordem.modelo" />
-          </b-field>
-
-          <b-field label="Acessorios">
-            <b-input v-model="ordem.acessorios" type="textarea"/>
-          </b-field>
-        </div>
-      </div>
-      <hr/>
-
-      <div style="width: 100%; text-align: right">
-        <button class="button is-info is-fullwidth" @click="salvar" :disabled="habilitarSavar">Salvar</button>
       </div>
     </div>
   </div>
@@ -113,12 +132,14 @@
 import { permissao } from '../../../config/permissao'
 import firebase from 'firebase'
 import { mask } from 'vue-the-mask'
+import Menu from '../../../components/Menu'
+import MenuLateral from '../../../components/MenuLateral'
 
 export default {
   mixins: [permissao],
   directives: { mask },
+  components: {'meu-menu': Menu, 'menu-lateral': MenuLateral},
   created () {
-    this.checarLogado()
     this.listarClientes()
     this.dataAtual = new Date()
     this.ajustardata(this.dataAtual)
