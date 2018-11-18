@@ -1,7 +1,7 @@
 <style scoped>
   .login {width: 300px; margin: auto}
   img {width: 140px; height: 140px}
-  p {font-size: 32px; color: #9ba5af; font-weight: 300}
+  p {font-size: 32px; color: white; font-weight: 500}
   .botao {background-color: #1d6fa5; border: 0; border-color: #1d6fa5 !important; padding: 15px; color: white; width: 100%; border-radius: 0.3rem}
 </style>
 
@@ -13,9 +13,10 @@
       <h1 style="color: white; font-size: 32px; font-weight: 300">Faça login na sua conta</h1>
     </div>
 
-    <div style="background-color: white; margin: 0 39% 0 39%; border-radius: 10px" class="animated fadeIn">
+    <div style="background-color: white; margin: 0 38% 0 38%; border-radius: 10px" class="animated fadeIn">
       <div>
-        <div class="has-text-centered" style="border-bottom: 1px solid #E5E5E5E5">
+        <div class="has-text-centered" style="border-bottom: 1px solid #E5E5E5E5; background-color: black;
+                                              border-radius: 10px 10px 0 0">
           <p style="margin: 40px">STAND BY</p>
         </div>
 
